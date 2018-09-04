@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace DataEstate.Stripe.Models
+namespace DataEstate.Stripe.Models.Dtos
 {
     public class Customer
     {

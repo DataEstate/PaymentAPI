@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using DataEstate.Stripe.Enums;
 
-namespace DataEstate.Stripe.Models
+namespace DataEstate.Stripe.Models.Dtos
 {
     public class SubscriptionPlan
     {

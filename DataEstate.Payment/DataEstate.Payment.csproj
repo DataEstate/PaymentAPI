@@ -21,4 +21,7 @@
     <ProjectReference Include="..\DataEstate.Stripe\DataEstate.Stripe.csproj" />
     <ProjectReference Include="..\DataEstate.Auth\DataEstate.Auth.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Controllers\SubscribeController.cs" />
+  </ItemGroup>
 </Project>

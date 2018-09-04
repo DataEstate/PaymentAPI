@@ -4,13 +4,14 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using DataEstate.Stripe.Enums;
 
-namespace DataEstate.Stripe.Models
+namespace DataEstate.Stripe.Models.Dtos
 {
     public class Subscription
     {
         [JsonProperty("id")]
         public string Id;
 
+        //Used in Stripe connect only for now. 
         [JsonProperty("appFee")]
         public decimal? AppFee;
 
@@ -55,7 +56,7 @@ namespace DataEstate.Stripe.Models
 
         [JsonProperty("status")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public SubscriptionStatus Status;
+        public SubscriptionStatus? Status;
 
         [JsonProperty("tax")]
         public decimal? Tax;

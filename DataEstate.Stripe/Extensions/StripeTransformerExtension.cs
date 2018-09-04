@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using Stripe;
-using DataEstate.Stripe.Models;
+using DataEstate.Stripe.Models.Dtos;
 using DataEstate.Stripe.Helpers;
-
+using DataEstate.Stripe.Enums;
 
 namespace DataEstate.Stripe.Extensions
 {
     public static class StripeTransformerExtension
     {
-        /**** TO STRIPE ****/
+        /**** FROM STRIPE ****/
         public static SubscriptionPlan ToSubscriptionPlan(this StripePlan stripePlan)
         {
             var plan = new SubscriptionPlan
@@ -55,7 +55,46 @@ namespace DataEstate.Stripe.Extensions
             return planFilter;
         }
 
-        /**** FROM STRIPE ****/
+        //TODO: Figure out usage for App Fee. currently not used. 
+        public static Subscription ToSubscription(this StripeSubscription stripeSubscription)
+        {
+            var subscription = new Subscription
+            {
+                Id = stripeSubscription.Id,
+                CustomerId = stripeSubscription.CustomerId, 
+                BillingType = ((StripeBilling)stripeSubscription.Billing).ToBillingType(),
+                InvoiceStartDate = stripeSubscription.BillingCycleAnchor,
+                CancelAtPeriodEnd = stripeSubscription.CancelAtPeriodEnd,
+                CancellationDate = stripeSubscription.CanceledAt,
+                CreatedDate = (DateTime)stripeSubscription.Created,
+                CurrentPeriodEndDate = stripeSubscription.CurrentPeriodEnd,
+                CurrentPeriodStartDate = stripeSubscription.CurrentPeriodStart,
+                DaysUntilDue = stripeSubscription.DaysUntilDue,
+                SubscriptionEndDate = stripeSubscription.EndedAt, 
+                Meta = stripeSubscription.Metadata,
+                Status = StripeHelpers.ToSubscriptionStatus(stripeSubscription.Status), 
+                Tax = stripeSubscription.TaxPercent, 
+                TrialStart = stripeSubscription.TrialStart,
+                TrialEnd = stripeSubscription.TrialEnd
+            };
+            //Items
+            if (stripeSubscription.Items != null && stripeSubscription.Items.TotalCount > 0)
+            {
+                subscription.Items = new List<SubscriptionItem>();
+                foreach (var item in stripeSubscription.Items.Data)
+                {
+                    subscription.Items.Add(
+                        new SubscriptionItem
+                        {
+                            Id = item.Id,
+                            Quantity = item.Quantity
+                        }
+                    );
+                }
+            }
+            return subscription;
+        }
+        /**** TO STRIPE ****/
         public static StripePlanListOptions ToStripePlanListOptions(this PlanListFilterOptions planFilter)
         {
             var stripePlanOption = new StripePlanListOptions
@@ -74,7 +113,7 @@ namespace DataEstate.Stripe.Extensions
             return stripePlanOption;
         }
 
-        public static StripeSubscriptionCreateOptions ToStripeSubscriptionCreate(this Subscription subscription, List<SubscriptionItem> subscriptionItems = null)
+        public static StripeSubscriptionCreateOptions ToStripeSubscriptionCreate(this Subscription subscription)
         {
             //TODO: Discount
             var subscriptionCreate = new StripeSubscriptionCreateOptions
@@ -91,10 +130,10 @@ namespace DataEstate.Stripe.Extensions
                 TrialPeriodDays = subscription.TrialDays
             };
             ////Plans
-            if (subscriptionItems != null && subscriptionItems.Count > 0)
+            if (subscription.Items != null && subscription.Items.Count > 0)
             {
                 subscriptionCreate.Items = new List<StripeSubscriptionItemOption>();
-                foreach (var plan in subscriptionItems)
+                foreach (var plan in subscription.Items)
                 {
                     subscriptionCreate.Items.Add(
                         new StripeSubscriptionItemOption
@@ -106,6 +145,6 @@ namespace DataEstate.Stripe.Extensions
             }
             return subscriptionCreate;
         }
-    
+     
     }
 }

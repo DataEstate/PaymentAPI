@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Stripe;
-using DataEstate.Stripe.Models;
+using DataEstate.Stripe.Models.Dtos;
 
 namespace DataEstate.Stripe.Interfaces
 {
@@ -34,6 +34,15 @@ namespace DataEstate.Stripe.Interfaces
         /// <returns>The product.</returns>
         /// <param name="ProductId">Product identifier.</param>
         ServiceProduct GetProduct(string ProductId);
+
+        /// <summary>
+        /// Create a subscription 
+        /// </summary>
+        /// <returns>The subscription.</returns>
+        /// <param name="CustomerId">Customer identifier.</param>
+        /// <param name="subscription">Subscription.</param>
+        Subscription CreateSubscription(string customerId, Subscription subscription);
+
 
 
     }

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace DataEstate.Stripe.Models
+namespace DataEstate.Stripe.Models.Dtos
 {
     public class SubscriptionItem
     {

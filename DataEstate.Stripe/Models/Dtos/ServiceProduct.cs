@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace DataEstate.Stripe.Models
+namespace DataEstate.Stripe.Models.Dtos
 {
     public class ServiceProduct
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using DataEstate.Stripe.Models;
+using DataEstate.Stripe.Models.Dtos;
 using DataEstate.Stripe.Enums;
 using Stripe;
 using System.Text;

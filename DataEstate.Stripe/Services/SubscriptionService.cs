@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Stripe;
-using DataEstate.Stripe.Models;
+using DataEstate.Stripe.Models.Dtos;
 using DataEstate.Stripe.Extensions;
 using DataEstate.Stripe.Interfaces;
 using Stripe.Infrastructure;
@@ -71,5 +71,10 @@ namespace DataEstate.Stripe.Services
             return product;
         }
 
+        public Subscription CreateSubscription(string customerId, Subscription subscription)
+        {
+            var newSubscription = _subscriptionService.Create(customerId, subscription.ToStripeSubscriptionCreate());
+            return newSubscription.ToSubscription();
+        }
     }
 }

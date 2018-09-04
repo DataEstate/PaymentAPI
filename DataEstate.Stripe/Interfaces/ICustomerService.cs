@@ -1,5 +1,5 @@
 ﻿using System;
-using DataEstate.Stripe.Models;
+using DataEstate.Stripe.Models.Dtos;
 
 namespace DataEstate.Stripe.Interfaces
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using DataEstate.Stripe.Interfaces;
-using DataEstate.Stripe.Models;
+using DataEstate.Stripe.Models.Dtos;
 using DataEstate.Stripe.Extensions;
 using Stripe;
 

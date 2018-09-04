@@ -4,20 +4,39 @@ namespace DataEstate.Stripe.Helpers
 {
     public static class StripeHelpers
     {
-        public static StripeInterval ToStripeInterval(string intervalName)
+        public static SubscriptionInterval ToStripeInterval(string intervalName)
         {
             switch (intervalName)
             {
                 case "day":
-                    return StripeInterval.Day;
+                    return SubscriptionInterval.Day;
                 case "month":
-                    return StripeInterval.Month;
+                    return SubscriptionInterval.Month;
                 case "week":
-                    return StripeInterval.Week;
+                    return SubscriptionInterval.Week;
                 case "year":
-                    return StripeInterval.Year;
+                    return SubscriptionInterval.Year;
                 default:
-                    return StripeInterval.None;
+                    return SubscriptionInterval.None;
+            }
+        }
+
+        public static SubscriptionStatus? ToSubscriptionStatus(string stripeStatus)
+        {
+            switch (stripeStatus)
+            {
+                case "trialing":
+                    return SubscriptionStatus.Trial;
+                case "active":
+                    return SubscriptionStatus.Active;
+                case "past_due":
+                    return SubscriptionStatus.Overdue;
+                case "canceled":
+                    return SubscriptionStatus.Inactive;
+                case "unpaid":
+                    return SubscriptionStatus.Unpaid;
+                default:
+                    return null;
             }
         }
     }

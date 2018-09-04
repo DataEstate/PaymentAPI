@@ -13,6 +13,9 @@ using Stripe;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using DataEstate.Helpers;
+using DataEstate.Stripe.Interfaces;
+using DataEstate.Stripe.Services;
 
 namespace DataEstate.Payment
 {
@@ -59,6 +62,7 @@ namespace DataEstate.Payment
                         o.Authority = authAuthority;
                     });
             services.AddSingleton<IAuthorizationHandler, OAuthClientCredentialHandler>();
+            services.AddSingleton<ISubscriptionService, SubscriptionService>();
             services.AddMvc();
         }
 
@@ -70,6 +74,7 @@ namespace DataEstate.Payment
                 app.UseDeveloperExceptionPage();
             }
             StripeConfiguration.SetApiKey(Configuration.GetSection("Stripe:SecretKey").Value);
+            EncryptionHelper.SetEncryptionKey(Configuration.GetSection("Encryption:Key").Value);
             app.UseAuthentication();
             app.UseMvc();
         }
