@@ -48,7 +48,7 @@ namespace DataEstate.Stripe.Services
             return subscriptionPlans;
         }
 
-        public ServiceProduct GetProduct(string ProductId)
+        public SubscriptionProduct GetProduct(string ProductId)
         {
             //TODO: Replace with proper stripe options later. 
             var stripePlans = _planService.List(
@@ -58,7 +58,7 @@ namespace DataEstate.Stripe.Services
                 }
             );
             var stripeProduct = _productService.Get(ProductId);
-            var product = new ServiceProduct
+            var product = new SubscriptionProduct
             {
                 Name = stripeProduct.Name,
                 Plans = new List<SubscriptionPlan>(),
@@ -73,7 +73,12 @@ namespace DataEstate.Stripe.Services
 
         public Subscription CreateSubscription(string customerId, Subscription subscription)
         {
-            var newSubscription = _subscriptionService.Create(customerId, subscription.ToStripeSubscriptionCreate());
+            var subscriptionCreate = subscription.ToStripeSubscriptionCreate();
+            if (subscriptionCreate.CustomerId == null)
+            {
+                subscriptionCreate.CustomerId = customerId;
+            }
+            var newSubscription = _subscriptionService.Create();
             return newSubscription.ToSubscription();
         }
     }

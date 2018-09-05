@@ -4,8 +4,11 @@ using Newtonsoft.Json;
 
 namespace DataEstate.Stripe.Models.Dtos
 {
-    public class ServiceProduct
+    public class SubscriptionProduct
     {
+        [JsonProperty("id")]
+        public string Id;
+
         [JsonProperty("name")]
         public string Name;
 

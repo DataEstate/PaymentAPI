@@ -32,5 +32,8 @@ namespace DataEstate.Stripe.Models.Dtos
 
         [JsonProperty("productId")]
         public string ProductId;
+
+        [JsonProperty("product")]
+        public SubscriptionProduct Product;
     }
 }

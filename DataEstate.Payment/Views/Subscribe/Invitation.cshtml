@@ -1,0 +1,84 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+		@model DataEstate.Stripe.Models.Dtos.SubscriptionProposal
+		@namespace DataEstate.Stripe.Extensions
+}
+<header class="section-header container">
+	<div class="row">
+		<div class="col-md-12">
+			<h1>Data Estate Connector Subscription</h1>
+			<span class="subtitle">
+				Please fill in this form to setup your Data Estate connector
+			</span>
+		</div>
+	</div>
+</header>
+<div class="divider"></div>
+<section class="section container">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="description-container">
+				<p>
+					Thank you for choosing to use the Data Estate Connector plugin. Please fill out your details below to start your subscription. 
+					You can cancel the subscription at anytime by emailing <a href="mailto:cancellation@dataestate.com.au">cancellation@dataestate.com.au</a> with your subscription ID, 
+					which will be provied to you once the subscription is complete. 
+				</p>
+			</div>
+		</div>
+	</div>
+	<form id="frm-subscription">
+		<!-- Plans-->
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Subscription</h2>
+			</div>
+		</div>
+		@if (Model.Subscription != null)
+		{
+		<div class="row">
+			<div class="col-md-12">
+				@if (Model.Subscription.Items != null && Model.Subscription.Items.Count > 0)
+				{
+				<ul class="subscription-list">
+					@foreach (var item in Model.Subscription.Items)
+					{
+					<li>
+						<h3>@item.Plan.Product.Name</h3>
+						<div class="plan-detail">
+							<h4 class="plan-name">
+								@item.Plan.Name
+								<span class="plan-qty">x @item.Quantity</span>
+							</h4>
+							<span class="plan-amount-label">at </span>
+							<span class="plan-amount">@item.Plan.Amount.ToDollarAmount(true)</span> /
+							<span class="plan-interval">@item.Plan.Interval.ToString()</span>
+						</div>
+					</li>
+					}
+				</ul>
+				}
+			</div>
+		</div>
+		}
+		<!-- Business details-->
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Payment Details</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					<label for="businessName">Business Name</label>
+					<input type="text" class="form-control" id="businessName" placeholder="e.g. Data Estate Pty. Ltd." />
+				</div>
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input type="email" class="form-control" id="email" placeholder="e.g. client@business.com" />
+				</div>
+			</div>
+		</div>
+	</form>
+</section>

@@ -33,7 +33,7 @@ namespace DataEstate.Stripe.Interfaces
         /// </summary>
         /// <returns>The product.</returns>
         /// <param name="ProductId">Product identifier.</param>
-        ServiceProduct GetProduct(string ProductId);
+        SubscriptionProduct GetProduct(string ProductId);
 
         /// <summary>
         /// Create a subscription 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DataEstate.Stripe.Interfaces;
 using DataEstate.Stripe.Models.Dtos;
+using DataEstate.Stripe.Extensions;
 using DataEstate.Helpers;
 using System.Net;
 

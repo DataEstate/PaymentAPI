@@ -1,0 +1,34 @@
+﻿/**
+    Main Data Estate Theme Styles
+*/
+/** Utilities */
+.divider {
+    width: 100%;
+    margin: 25px 0px;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+.page-header {
+    margin: 0;
+    padding: 15px 25px;
+    border-bottom: 0px;
+}
+#main-header {
+    background: linear-gradient(#04568c,#0061A1);
+    box-shadow: 0px 1px 9px rgba(0, 0, 0, 0.47);
+}
+.page-header .logo-container {
+    height: 60px;
+    padding: 5px;
+    display: inline-block;
+}
+.logo-container img.logo {
+    height: 100%;
+}
+#main-footer {
+    min-height: 60px;
+    background: black;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: rgba(255,255,255,0.6);
+}

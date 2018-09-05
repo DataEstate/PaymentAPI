@@ -76,6 +76,7 @@ namespace DataEstate.Payment
             StripeConfiguration.SetApiKey(Configuration.GetSection("Stripe:SecretKey").Value);
             EncryptionHelper.SetEncryptionKey(Configuration.GetSection("Encryption:Key").Value);
             app.UseAuthentication();
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }

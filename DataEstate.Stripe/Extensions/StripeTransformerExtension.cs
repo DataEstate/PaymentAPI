@@ -22,6 +22,7 @@ namespace DataEstate.Stripe.Extensions
                 Interval = StripeHelpers.ToStripeInterval(stripePlan.Interval),
                 ProductId = stripePlan.ProductId
             };
+            //Product doesn't expand here, but can be contained. 
             return plan;
         }
 
@@ -87,6 +88,7 @@ namespace DataEstate.Stripe.Extensions
                         new SubscriptionItem
                         {
                             Id = item.Id,
+                            Plan = item.Plan.ToSubscriptionPlan(),
                             Quantity = item.Quantity
                         }
                     );
@@ -138,13 +140,13 @@ namespace DataEstate.Stripe.Extensions
                     subscriptionCreate.Items.Add(
                         new StripeSubscriptionItemOption
                         {
-                            PlanId = plan.Id, Quantity = plan.Quantity
+                            PlanId = plan.Id,
+                            Quantity = plan.Quantity
                         }
                     );
                 }
             }
             return subscriptionCreate;
         }
-     
     }
 }
