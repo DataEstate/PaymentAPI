@@ -77,6 +77,7 @@ namespace DataEstate.Payment.Controllers
 
         [Route("invite")]
         [HttpPost()]
+        [ValidateAntiForgeryToken]
         public IActionResult InviteSubmission()
         {
             var formData = new StreamReader(Request.Body).ReadToEnd();

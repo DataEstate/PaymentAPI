@@ -44,6 +44,7 @@ namespace DataEstate.Payment.Controllers
         /// Creates a subscription invitation
         /// </summary>
         /// <returns>The invitation.</returns>
+        [Authorize("subscription:create")]
         [Route("invitation")]
         [HttpPost()]
         public IActionResult CreateInvitation([FromBody] SubscriptionProposal subscriptionProposal)
@@ -55,6 +56,7 @@ namespace DataEstate.Payment.Controllers
             }, _defaultSettings);
         }
 
+        [Authorize("subscription:create")]
         [Route("invitation")]
         [HttpGet()]
         public IActionResult ReadInvitation([FromQuery(Name = "id")] string encryptionString)

@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <Folder Include="wwwroot\" />
     <Folder Include="Controllers\v1\" />
@@ -34,6 +33,7 @@
     <Content Remove="wwwroot\css\style-mobile.css" />
     <Content Remove="wwwroot\js\invitation.js" />
     <Content Remove="wwwroot\images\powered_by_stripe%402x.png" />
+    <Content Remove="hostsettings.json" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Views\404.html" />
@@ -44,5 +44,8 @@
     <None Include="wwwroot\css\style-mobile.css" />
     <None Include="wwwroot\js\invitation.js" />
     <None Include="wwwroot\images\powered_by_stripe%402x.png" />
+    <None Include="hostsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
