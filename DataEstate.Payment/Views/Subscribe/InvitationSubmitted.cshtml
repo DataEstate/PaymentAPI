@@ -1,0 +1,65 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+		@model DataEstate.Stripe.Models.Dtos.Subscription
+		@namespace DataEstate.Stripe.Extensions
+}
+<div class="card">
+	<header class="section-header container">
+		<div class="row">
+			<div class="col-md-12">
+				<h1>Success!</h1>
+				<span class="subtitle">
+					You subscription was successful!
+				</span>
+			</div>
+		</div>
+	</header>
+	<div class="divider"></div>
+	<section class="section container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="description-container">
+					<p>
+						Thank you for your subscription. Please note down the Subscription ID below. If you need to cancel the subscription,
+						please send an email to <a href="mailto:cancellation@dataestate.com.au">cancellation@dataestate.com.au</a> with your subscription ID. 
+					</p>
+				</div>
+				<div class="summary">
+					<h3>Subscription ID: @Model.Id</h3>
+					<div class="billing">
+						<span class="billing-label">Next Invoice Date:</span>
+						<span class="billing-date">@String.Format("{0:dd/MM/yyyy}", Model.CurrentPeriodEndDate)</span>
+					</div>
+					@foreach (var plan in Model.Items)
+					{
+						<table>
+							<tbody>
+								<tr>
+									<td class="plan-label">Plan</td>
+									<td>@plan.Plan.Name</td>
+								</tr>
+								<tr>
+									<td class="plan-label">Price</td>
+									<td>@plan.Plan.Amount.ToDollarAmount(true)</td>
+								</tr>
+								<tr>
+									<td class="plan-label">Quantity</td>
+									<td>@plan.Quantity</td>
+								</tr>
+								<tr>
+									<td class="plan-label">Interval</td>
+									<td>@plan.Plan.Interval</td>
+								</tr>
+							</tbody>
+						</table>
+					}
+				</div>
+				<div class="final">
+					<p>You may now safely close this window. </p>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>

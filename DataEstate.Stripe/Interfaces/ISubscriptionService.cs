@@ -40,10 +40,14 @@ namespace DataEstate.Stripe.Interfaces
         /// </summary>
         /// <returns>The subscription.</returns>
         /// <param name="CustomerId">Customer identifier.</param>
+        /// <param name="subscriptionItem">Subscription items (plans).</param>
+        Subscription CreateSubscription(string customerId, List<SubscriptionItem> subscriptionItems);
+
+        /// <summary>
+        /// Creates the subscription with subscription options.
+        /// </summary>
+        /// <returns>The subscription.</returns>
         /// <param name="subscription">Subscription.</param>
-        Subscription CreateSubscription(string customerId, Subscription subscription);
-
-
-
+        Subscription CreateSubscription(Subscription subscription);
     }
 }

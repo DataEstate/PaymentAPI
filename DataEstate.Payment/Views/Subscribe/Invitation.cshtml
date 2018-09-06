@@ -5,80 +5,180 @@
 		@model DataEstate.Stripe.Models.Dtos.SubscriptionProposal
 		@namespace DataEstate.Stripe.Extensions
 }
-<header class="section-header container">
-	<div class="row">
-		<div class="col-md-12">
-			<h1>Data Estate Connector Subscription</h1>
-			<span class="subtitle">
-				Please fill in this form to setup your Data Estate connector
-			</span>
-		</div>
-	</div>
-</header>
-<div class="divider"></div>
-<section class="section container">
-	<div class="row">
-		<div class="col-md-12">
-			<div class="description-container">
-				<p>
-					Thank you for choosing to use the Data Estate Connector plugin. Please fill out your details below to start your subscription. 
-					You can cancel the subscription at anytime by emailing <a href="mailto:cancellation@dataestate.com.au">cancellation@dataestate.com.au</a> with your subscription ID, 
-					which will be provied to you once the subscription is complete. 
-				</p>
-			</div>
-		</div>
-	</div>
-	<form id="frm-subscription">
-		<!-- Plans-->
+<div class="card">
+	<header class="section-header container">
 		<div class="row">
 			<div class="col-md-12">
-				<h2>Subscription</h2>
+				<h1>Subscription Invitation</h1>
+				<span class="subtitle">
+					Please fill in this form to setup your Data Estate connector
+				</span>
 			</div>
 		</div>
-		@if (Model.Subscription != null)
-		{
+	</header>
+	<div class="divider"></div>
+	<section class="section container">
 		<div class="row">
 			<div class="col-md-12">
-				@if (Model.Subscription.Items != null && Model.Subscription.Items.Count > 0)
-				{
-				<ul class="subscription-list">
-					@foreach (var item in Model.Subscription.Items)
+				<div class="description-container">
+					<p>
+						Thank you for choosing to use the Data Estate Connector plugin. Please fill out your details below to start your subscription. 
+						You can cancel the subscription at anytime by emailing <a href="mailto:cancellation@dataestate.com.au">cancellation@dataestate.com.au</a> with your subscription ID, 
+						which will be provided to you once the subscription is complete. 
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="divider"></div>
+		<form id="frm-subscription" method="post">
+			<!-- Plans-->
+			<div class="row">
+				<div class="col-md-12">
+					<h2>Subscription</h2>
+				</div>
+			</div>
+			@if (Model.Subscription != null)
+			{
+			<div class="row">
+				<div class="col-md-12">
+					@if (Model.Subscription.Items != null && Model.Subscription.Items.Count > 0)
 					{
-					<li>
-						<h3>@item.Plan.Product.Name</h3>
-						<div class="plan-detail">
-							<h4 class="plan-name">
-								@item.Plan.Name
-								<span class="plan-qty">x @item.Quantity</span>
-							</h4>
-							<span class="plan-amount-label">at </span>
-							<span class="plan-amount">@item.Plan.Amount.ToDollarAmount(true)</span> /
-							<span class="plan-interval">@item.Plan.Interval.ToString()</span>
-						</div>
-					</li>
+					<ul class="subscription-list">
+						@foreach (var item in Model.Subscription.Items)
+						{
+						<li class="panel panel-primary">
+							<h3 class="panel-heading">@item.Plan.Product.Name</h3>
+							<div class="panel-body">
+								@if (item.Plan.Product.Description != null) {
+							<div class="product-description">
+								@item.Plan.Product.Description
+							</div>
+								}
+								<div class="plan-detail">
+									<input type="hidden" name="plans[]" value="@item.PlanId:@item.Quantity" />
+									<h4 class="plan-name">
+										@item.Plan.Name
+										<span class="plan-qty">x @item.Quantity</span>
+									</h4>
+									<div class="plan-cost-container">
+										<span class="plan-amount-label">at </span>
+										<span class="plan-amount">@item.Plan.Amount.ToDollarAmount(true)</span> /
+										<span class="plan-interval">@item.Plan.Interval.ToString()</span>
+									</div>
+								</div>
+							</div>
+						</li>
+						}
+					</ul>
 					}
-				</ul>
-				}
-			</div>
-		</div>
-		}
-		<!-- Business details-->
-		<div class="row">
-			<div class="col-md-12">
-				<h2>Payment Details</h2>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<div class="form-group">
-					<label for="businessName">Business Name</label>
-					<input type="text" class="form-control" id="businessName" placeholder="e.g. Data Estate Pty. Ltd." />
-				</div>
-				<div class="form-group">
-					<label for="email">Email</label>
-					<input type="email" class="form-control" id="email" placeholder="e.g. client@business.com" />
 				</div>
 			</div>
-		</div>
-	</form>
-</section>
+			}
+			<div class="divider"></div>
+			<!-- Business details-->
+			<div class="row">
+				<div class="col-md-12">
+					<h2>Business Details</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="businessName" class="mandatory">Business Name</label>
+						<input type="text" class="form-control" name="name" id="businessName" placeholder="e.g. Data Estate Pty. Ltd." required/>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="email" class="mandatory">Email</label>
+						<input type="email" class="form-control" name="email" id="email" placeholder="e.g. client@business.com" required/>
+					</div>
+				</div>
+			</div>
+			<!-- Payment details-->
+			<div class="row">
+				<div class="col-md-12">
+					<h2>Payment Details</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Card Holder</label>
+						<input type="text" class="form-control" name="cardHolder" id="card-holder" placeholder="e.g. Mary Jane" />
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Card address country</label>
+						<input type="text" class="form-control" name="cardCountry" id="card-country" placeholder="e.g. Australia" />
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<label>Credit Card</label>
+						<div class="card-details" id="stripe-card"></div>
+						<label class="hide" id="stripe-error"></label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="form-group">
+						<button type="button" class="btn btn-primary" id="payment-submit">
+							Submit
+						</button>
+						<a class="stripe-container" href="https://www.stripe.com" target="_blank">
+							<img src="~/images/powered_by_stripe@2x.png" alt="Powered by Stripe" />
+						</a>
+					</div>
+				</div>
+			</div>
+			<input type="hidden" id="pubkey" value="pk_test_6SOXDCy0ejmWEmp6Ke4azgaj" />
+			<!-- Submission-->
+			<!--Confirmation-->
+			<div id="message-alert" class="modal fade" role="dialog">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">
+								<span>&times;</span>
+							</button>
+							<h4 class="modal-title">Confirmation</h4>
+						</div>
+						<div class="modal-body">
+							<p>Thank you for subscribing to Data Estate Connector. Please confirm that your details below are correct. </p>
+							<div id="customer-detail">
+								<dl>
+									<dt class="customer-label">Business Name: </dt>
+									<dd id="customer-name"></dd>
+									<dt class="customer-label">Email: </dt>
+									<dd id="customer-email"></dd>
+								</dl>
+								<dl>
+									<dt class="customer-label">Card Holder:</dt>
+									<dd id="customer-card-holder"></dd>
+									<dt class="customer-label">Card Number:</dt>
+									<dd id="customer-card-number"></dd>
+									<dt class="customer-label">Card Type:</dt>
+									<dd id="customer-card-brand"></dd>
+									<dt class="customer-label">Card Expiry:</dt>
+									<dd id="customer-card-expiry"></dd>
+									<dt class="customer-label">Address Country:</dt>
+									<dd id="customer-card-country"></dd>
+								</dl>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary" id="pay-now">Pay now</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</section>
+</div>
+@section Scripts {
+<script src="~/js/invitation.js"></script>
+}

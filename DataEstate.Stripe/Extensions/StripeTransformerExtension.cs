@@ -38,6 +38,7 @@ namespace DataEstate.Stripe.Extensions
             return customer;
         }
 
+
         public static PlanListFilterOptions ToPlanListFilter(this StripePlanListOptions stripePlanOptions)
         {
             var planFilter = new PlanListFilterOptions
@@ -140,7 +141,7 @@ namespace DataEstate.Stripe.Extensions
                     subscriptionCreate.Items.Add(
                         new StripeSubscriptionItemOption
                         {
-                            PlanId = plan.Id,
+                            PlanId = plan.PlanId,
                             Quantity = plan.Quantity
                         }
                     );

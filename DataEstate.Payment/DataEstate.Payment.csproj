@@ -11,6 +11,9 @@
     <Folder Include="Views\Shared\" />
     <Folder Include="Views\Subscribe\" />
     <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\js\" />
+    <Folder Include="Models\" />
+    <Folder Include="Models\Dtos\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +32,8 @@
     <Content Remove="wwwroot\images\shield.png" />
     <Content Remove="wwwroot\css\style.css" />
     <Content Remove="wwwroot\css\style-mobile.css" />
+    <Content Remove="wwwroot\js\invitation.js" />
+    <Content Remove="wwwroot\images\powered_by_stripe%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Views\404.html" />
@@ -37,5 +42,7 @@
     <None Include="wwwroot\images\shield.png" />
     <None Include="wwwroot\css\style.css" />
     <None Include="wwwroot\css\style-mobile.css" />
+    <None Include="wwwroot\js\invitation.js" />
+    <None Include="wwwroot\images\powered_by_stripe%402x.png" />
   </ItemGroup>
 </Project>

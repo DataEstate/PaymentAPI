@@ -11,12 +11,13 @@
 		<link rel="stylesheet" type="text/css" href="~/css/style-mobile.css" />
 	</head>
 	<body>
-		<header id="main-header" class="page-header container-fluid">
+		<header id="main-header" class="page-header container-fluid navbar-fixed-top primary-nav navbar">
 			<div class="logo-container">
-				<img class="logo" src="~/images/shield.png" alt="Data Estate Symbol (white)"/>
+				<img class="logo" src="~/images/shield.png" alt="Data Estate Symbol (white)" />
 			</div>
-			<nav class="primary-nav navbar navbar-fixed-top">
+			<nav class="header-content">
 				<!-- Navigation-->
+				<h2>@ViewBag.BannerTitle</h2>
 			</nav>
 		</header>
 		<main id="main-content">
@@ -31,5 +32,26 @@
 				</div>
 			</div>
 		</footer>
-	</body>
+		<!--scripts-->
+		<!--jQuery-->
+		<environment include="Development">
+			<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+			<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.js"></script>
+			<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+		</environment>
+		<environment exclude="Development">
+			<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+							integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+							crossorigin="anonymous"></script>
+			<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+			<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		</environment>
+			<script type="text/javascript" src="https://js.stripe.com/v3/"></script>
+			@if (IsSectionDefined("Scripts"))
+	{
+		@RenderSection("Scripts")
+}
+</body>
 </html>

@@ -64,6 +64,11 @@ namespace DataEstate.Stripe.Services
                 Plans = new List<SubscriptionPlan>(),
                 Status = stripeProduct.Caption
             };
+            //Description
+            if (stripeProduct.Metadata != null && stripeProduct.Metadata.ContainsKey("description"))
+            {
+                product.Description = stripeProduct.Metadata["description"];
+            }
             foreach (var stripePlan in stripePlans)
             {
                 product.Plans.Add(stripePlan.ToSubscriptionPlan());
@@ -71,15 +76,21 @@ namespace DataEstate.Stripe.Services
             return product;
         }
 
-        public Subscription CreateSubscription(string customerId, Subscription subscription)
+        public Subscription CreateSubscription(Subscription subscription)
         {
             var subscriptionCreate = subscription.ToStripeSubscriptionCreate();
-            if (subscriptionCreate.CustomerId == null)
-            {
-                subscriptionCreate.CustomerId = customerId;
-            }
-            var newSubscription = _subscriptionService.Create();
+            var newSubscription = _subscriptionService.Create(subscriptionCreate);
             return newSubscription.ToSubscription();
+        }
+
+        public Subscription CreateSubscription(string customerId, List<SubscriptionItem> subscriptionItems)
+        {
+            var subscriptionCreate = new Subscription
+            {
+                CustomerId = customerId,
+                Items = subscriptionItems
+            };
+            return CreateSubscription(subscriptionCreate);
         }
     }
 }

@@ -17,5 +17,8 @@ namespace DataEstate.Stripe.Models.Dtos
 
         [JsonProperty("plans")]
         public List<SubscriptionPlan> Plans;
+
+        [JsonProperty("description")]
+        public string Description;
     }
 }

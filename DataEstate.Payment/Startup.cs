@@ -63,6 +63,7 @@ namespace DataEstate.Payment
                     });
             services.AddSingleton<IAuthorizationHandler, OAuthClientCredentialHandler>();
             services.AddSingleton<ISubscriptionService, SubscriptionService>();
+            services.AddSingleton<ICustomerService, CustomerService>();
             services.AddMvc();
         }
 
