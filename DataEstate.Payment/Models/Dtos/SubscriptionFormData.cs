@@ -1,25 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+
 namespace DataEstate.Payment.Models.Dtos
 {
     public class SubscriptionFormData
     {
         [JsonProperty("name")]
-        public string Name;
+        [FromForm(Name = "name")]
+        public string Name { get; set; }
 
         [JsonProperty("email")]
-        public string Email;
+        [FromForm(Name = "email")]
+        public string Email { get; set; }
 
         [JsonProperty("cardHolder")]
-        public string CardHolder;
+        [FromForm(Name = "cardHolder")]
+        public string CardHolder { get; set; }
     
         [JsonProperty("cardCountry")]
-        public string CardCountry;
+        [FromForm(Name = "cardCountry")]
+        public string CardCountry { get; set; }
 
         [JsonProperty("currency")]
-        public string Currency;
+        [FromForm(Name = "currency")]
+        public string Currency { get; set; }
 
         [JsonProperty("token")]
-        public string CardToken;
+        [FromForm(Name = "token")]
+        public string CardToken { get; set; }
+
+        [JsonProperty("plans")]
+        [FromForm(Name = "plans")]
+        public List<SubscriptionFormPlan> Plans { get; set; }
     }
 }

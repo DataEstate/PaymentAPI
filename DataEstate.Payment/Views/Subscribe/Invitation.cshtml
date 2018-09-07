@@ -31,7 +31,6 @@
 		</div>
 		<div class="divider"></div>
 		<form id="frm-subscription" method="post">
-			@Html.AntiForgeryToken()
 			<!-- Plans-->
 			<div class="row">
 				<div class="col-md-12">
@@ -45,8 +44,9 @@
 					@if (Model.Subscription.Items != null && Model.Subscription.Items.Count > 0)
 					{
 					<ul class="subscription-list">
-						@foreach (var item in Model.Subscription.Items)
+						@for (var i = 0; i < Model.Subscription.Items.Count; i++)
 						{
+							var item = Model.Subscription.Items[i];
 						<li class="panel panel-primary">
 							<h3 class="panel-heading">@item.Plan.Product.Name</h3>
 							<div class="panel-body">
@@ -56,7 +56,8 @@
 							</div>
 								}
 								<div class="plan-detail">
-									<input type="hidden" name="plans[]" value="@item.PlanId:@item.Quantity" />
+									<input type="hidden" name="plans[@i].id" value="@item.PlanId" />
+									<input type="hidden" name="plans[@i].qty" value="@item.Quantity" />
 									<h4 class="plan-name">
 										@item.Plan.Name
 										<span class="plan-qty">x @item.Quantity</span>
@@ -106,7 +107,7 @@
 				<div class="col-md-6">
 					<div class="form-group">
 						<label>Card Holder</label>
-						<input type="text" class="form-control" name="cardHolder" id="card-holder" placeholder="e.g. Mary Jane" />
+						<input type="text" class="form-control" name="cardHolder" id="card-holder" placeholder="e.g. Jenny Smith" />
 					</div>
 				</div>
 				<div class="col-md-6">

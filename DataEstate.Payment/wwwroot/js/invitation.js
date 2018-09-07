@@ -72,6 +72,7 @@
         ev.preventDefault();
         var form = $("#frm-subscription");
         form.append('<input type="hidden" value="'+cardToken.id+'" name="token">');
+        console.log(form);
         form.submit();
     });
 })(jQuery);

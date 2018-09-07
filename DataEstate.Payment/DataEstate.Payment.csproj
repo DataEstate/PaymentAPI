@@ -37,15 +37,31 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Views\404.html" />
+    <None Remove="Models\Dtos\SubscriptionFormPlan.css" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\images\shield.png" />
-    <None Include="wwwroot\css\style.css" />
-    <None Include="wwwroot\css\style-mobile.css" />
-    <None Include="wwwroot\js\invitation.js" />
-    <None Include="wwwroot\images\powered_by_stripe%402x.png" />
+    <None Include="wwwroot\images\shield.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\css\style.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\css\style-mobile.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\js\invitation.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\images\powered_by_stripe%402x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="hostsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="wwwroot\images\powered_by_stripe%402x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

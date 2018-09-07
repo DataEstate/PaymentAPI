@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using DataEstate.Stripe.Interfaces;
 using DataEstate.Helpers;
@@ -12,6 +11,7 @@ using DataEstate.Payment.Models.Dtos;
 using System.IO;
 using Microsoft.Extensions.Primitives;
 using Stripe;
+using Microsoft.AspNetCore.Antiforgery;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -78,68 +78,60 @@ namespace DataEstate.Payment.Controllers
         [Route("invite")]
         [HttpPost()]
         [ValidateAntiForgeryToken]
-        public IActionResult InviteSubmission()
+        public IActionResult InviteSubmission([FromForm] SubscriptionFormData subscriptionFormData)
         {
-            var formData = new StreamReader(Request.Body).ReadToEnd();
-            var queryData = QueryHelpers.ParseQuery(formData);
+            //var formData = new StreamReader(Request.Body).ReadToEnd();
+
+            //var queryData = QueryHelpers.ParseQuery(formData);
 
             //TODO: Move to service or helper?
             /** Process Plans **/
             //Stop if no plans to subscribe. 
-            if (!queryData.ContainsKey("plans[]"))
+            if (subscriptionFormData.Plans == null || subscriptionFormData.Plans.Count <= 0)
             {
                 Response.StatusCode = 400;
-                return Json(new ErrorResponse
-                {
-                    Status = "Error",
-                    StatusCode = 400,
-                    Message = "Request had no plans to subscribe to. "
-                }, _defaultSettings);
+                ViewData["ErrorTitle"] = "There's a problem with your request";
+                ViewData["ErrorDescription"] = "Submission had no plans attached. No transaction or subscription occured. ";
+                return View("InvitationError");
             }
 
-            var plansData = queryData["plans[]"];
             var plans = new List<SubscriptionItem>();
-            foreach (var planData in plansData)
+            foreach (var planData in subscriptionFormData.Plans)
             {
-                var planContent = planData.Split(":"); //First is plan ID, second is quantity. 
                 plans.Add(
                     new SubscriptionItem
                     {
-                        PlanId = planContent[0], 
-                        Quantity = Convert.ToInt16(planContent[1])
+                        PlanId = planData.PlanId,
+                        Quantity = planData.Quantity
                     }
                 );
             }
 
             Customer customer;
             /** Create Customer. **/
-            if (!queryData.ContainsKey("email"))
+            if (subscriptionFormData.Email == null)
             {
-                return Json(new ErrorResponse
-                {
-                    Status = "Error",
-                    StatusCode = 400,
-                    Message = "Request missing client email."
-                });
+                Response.StatusCode = 400;
+                ViewData["ErrorTitle"] = "There's a problem with your request";
+                ViewData["ErrorDescription"] = "New subscription will require a valid client email. No transaction or subscription occured. ";
+                return View("InvitationError");
             }
-            if (!queryData.ContainsKey("token"))
+            if (subscriptionFormData.CardToken == null)
             {
-                return Json(new ErrorResponse
-                {
-                    Status = "Error",
-                    StatusCode = 400,
-                    Message = "Card Token is required. "
-                });
+                Response.StatusCode = 400;
+                ViewData["ErrorTitle"] = "There's a problem with your request";
+                ViewData["ErrorDescription"] = "Subscription requires a valid card token. No transaction or subscription occured. ";
+                return View("InvitationError");
             }
             try {
                 var customerCreate = new Customer
                 {
-                    Email = queryData["email"],
-                    DefaultSource = queryData["token"]
+                    Email = subscriptionFormData.Email,
+                    DefaultSource = subscriptionFormData.CardToken
                 };
-                if (queryData.ContainsKey("name"))
+                if (subscriptionFormData.Name != null)
                 {
-                    customerCreate.Name = queryData["name"];
+                    customerCreate.Name = subscriptionFormData.Name;
                 }
                 customer = _customerService.CreateCustomer(customerCreate);
             }
@@ -166,7 +158,6 @@ namespace DataEstate.Payment.Controllers
                         break;
                 }
                 return View("InvitationError");
-
             }
             catch (Exception e)
             {
@@ -177,12 +168,11 @@ namespace DataEstate.Payment.Controllers
             /** Create subscription. **/
             if (customer == null)
             {
-                return Json(new ErrorResponse
-                {
-                    Status = "Error",
-                    StatusCode = 400,
-                    Message = "No client present. Possibly failed creation."
-                }, _defaultSettings);
+                Response.StatusCode = 400;
+                ViewData["ErrorTitle"] = "There's a problem with your request";
+                ViewData["ErrorDescription"] = "Client creation failed, and therefore was not able to proceed with subscription. No transaction or subscription occured. ";
+                return View("InvitationError");
+
             }
             var subscription = _subscriptionService.CreateSubscription(customer.Id, plans);
             return View("InvitationSubmitted", subscription);

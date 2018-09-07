@@ -11,6 +11,12 @@ namespace DataEstate.Stripe.Models.Dtos
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        [JsonProperty("businessName")]
+        public string BusinessName { get; set; }
+
+        [JsonProperty("abn")]
+        public string Abn { get; set; }
+
         [JsonProperty("email")]
         public string Email { get; set; }
 
