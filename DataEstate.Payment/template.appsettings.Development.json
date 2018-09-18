@@ -1,0 +1,21 @@
+﻿{
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Debug",
+      "System": "Information",
+      "Microsoft": "Information"
+    }
+  }, 
+  "Stripe": {
+    "PublicKey": "", //<------- Stripe Pub Key
+    "SecretKey": "" //<------- Stripe Secrety Key
+  },
+  "OAuth": {
+    "Authority": "https://dataestate-dev.au.auth0.com/",
+    "Audience": "https://payment-dev.dataestate.net"
+  },
+  "Encryption": {
+    "Key": "" // <-------- 246 bit Encryption Key
+  }
+}
