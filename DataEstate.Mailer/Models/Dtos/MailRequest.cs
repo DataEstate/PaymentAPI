@@ -1,11 +1,13 @@
 ﻿using System;
+using Newtonsoft.Json;
+
 namespace DataEstate.Mailer.Models.Dtos
 {
-    public class MailGunRequest
+    public class MailRequest
     {
-        public string from { get; set; }
+        public string sender { get; set; }
 
-        public string to { get; set; }
+        public string receivers { get; set; }
 
         //CC
         public string cc { get; set; }

@@ -6,6 +6,9 @@ using DataEstate.Mailer.Models.Configurations;
 using Microsoft.Extensions.Options;
 using System.Net.Http;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Text;
+using System.Net.Http.Headers;
 
 namespace DataEstate.Mailer.Services
 {
@@ -18,31 +21,75 @@ namespace DataEstate.Mailer.Services
             _mailSettings = mailOptions.Value;
         }
 
+        public MailResponse Send(MailContent mailBody)
+        {
+            return SendAsync(mailBody).Result;
+        }
+
         /// <summary>
         /// Send the specified mailBody as email. 
         /// </summary>
         /// <returns>The send.</returns>
         /// <param name="mailBody">Mail body.</param>
-        public MailResponse Send(MailContent mailBody)
+        public async Task<MailResponse> SendAsync(MailContent mailBody)
         {
             //Make HTTP Request
             var client = new HttpClient();
-            //Mail Gun Request
-            //TODO: Serialize?
-
-
-            return new MailResponse
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes("api:" + _mailSettings.ApiKey)));
+            //Mail Gun Request - Only accepts Form Data. 
+            var message = GetRequestDictionary(mailBody);
+            if (message == null)
             {
-                Id = "Test",
-                Message = "Hi"
-            };
+                return new MailResponse
+                {
+                    Status = "Error",
+                    Id = "Send Error",
+                    Message = $"Message is empty. Missing required parameter. Make sure the receivers are set. "
+                };
+            }
+            var httpContent = new FormUrlEncodedContent(message);
+            var responseTask = await client.PostAsync($"{_mailSettings.Host}/messages", httpContent);
+
+            if (responseTask.IsSuccessStatusCode)
+            {
+                var content = await responseTask.Content.ReadAsStringAsync();
+                return new MailResponse
+                {
+                    Status = "success"
+                };
+            }
+            else
+            {
+                return new MailResponse
+                {
+                    Status = $"{responseTask.StatusCode}",
+                    Id = responseTask.ReasonPhrase,
+                    Message = responseTask.ReasonPhrase
+                };
+            }
         }
 
-        //private FormUrlEncodedContent CreateMailgunRequst(MailContent mailBody)
-        //{
-        //    var requestDict = new Dictionary<string, string>();
-        //    requestDict["from"] = String.Join(",", mailBody.Senders);
-        //    requestDict["to"] = String.Join(",", mailBody.Receivers);
-        //}
+        private Dictionary<string,string> GetRequestDictionary(MailContent mailBody)
+        {
+            if (mailBody.Receivers == null)
+            {
+                return null;
+            }
+            var requestDict = new Dictionary<string, string>
+            {
+                {"from", mailBody.Senders == null ? _mailSettings.DefaultSender : String.Join(",", mailBody.Senders)}, 
+                {"to", String.Join(",", mailBody.Receivers)}
+            };
+            requestDict["subject"] = mailBody.Subject == null ? _mailSettings.DefaultSubject : mailBody.Subject;
+            if (mailBody.Html != null)
+            {
+                requestDict["html"] = mailBody.Html;
+            }
+            else
+            {
+                requestDict["text"] = mailBody.Text == null ? "No content" : mailBody.Text;
+            }
+            return requestDict;
+        }
     }
 }

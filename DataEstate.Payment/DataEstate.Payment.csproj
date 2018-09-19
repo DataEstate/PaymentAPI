@@ -26,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DataEstate.Stripe\DataEstate.Stripe.csproj" />
     <ProjectReference Include="..\DataEstate.Auth\DataEstate.Auth.csproj" />
+    <ProjectReference Include="..\DataEstate.Mailer\DataEstate.Mailer.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\images\shield.png" />

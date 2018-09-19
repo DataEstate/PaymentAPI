@@ -10,7 +10,6 @@ namespace DataEstate.Mailer.Models.Dtos
         //Varies from service to service. 
         public string Id { get; set; }
 
-        //Mailing Service Type
-        public MailerType Type { get; set; }
+        public string Status { get; set; }
     }
 }

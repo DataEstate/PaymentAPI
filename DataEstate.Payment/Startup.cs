@@ -16,6 +16,9 @@ using Microsoft.AspNetCore.Authorization;
 using DataEstate.Helpers;
 using DataEstate.Stripe.Interfaces;
 using DataEstate.Stripe.Services;
+using DataEstate.Mailer.Interfaces;
+using DataEstate.Mailer.Services;
+using DataEstate.Mailer.Models.Configurations;
 
 namespace DataEstate.Payment
 {
@@ -36,6 +39,9 @@ namespace DataEstate.Payment
             };
             var authAuthority = Configuration.GetSection("OAuth:Authority").Value;
             var authAudience = Configuration.GetSection("OAuth:Audience").Value;
+
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddSingleton<IMailService, MailGunService>();
             services.AddAuthorization(
                 o =>
                 {

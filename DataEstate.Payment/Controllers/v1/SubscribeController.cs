@@ -12,6 +12,9 @@ using System.IO;
 using Microsoft.Extensions.Primitives;
 using Stripe;
 using Microsoft.AspNetCore.Antiforgery;
+using DataEstate.Mailer.Models.Dtos;
+using DataEstate.Mailer.Interfaces;
+using DataEstate.Mailer.Extensions;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -23,8 +26,9 @@ namespace DataEstate.Payment.Controllers
         private JsonSerializerSettings _defaultSettings;
         private ISubscriptionService _subscriptionService;
         private ICustomerService _customerService;
+        private IMailService _mailService;
 
-        public SubscribeController(ISubscriptionService subscriptionService, ICustomerService customerService)
+        public SubscribeController(ISubscriptionService subscriptionService, ICustomerService customerService, IMailService mailService)
         {
             _subscriptionService = subscriptionService;
             _customerService = customerService;
@@ -32,6 +36,7 @@ namespace DataEstate.Payment.Controllers
             {
                 NullValueHandling = NullValueHandling.Ignore
             };
+            _mailService = mailService;
         }
 
         // GET: /<controller>/
@@ -97,6 +102,15 @@ namespace DataEstate.Payment.Controllers
                 ViewData["Message"] = "If you're trying to access the subscription invitation page, you'll need a valid invitation ID to access the invites.";
                 return View("404");
             }
+        }
+
+        [Route("invite/send")]
+        [HttpPost()]
+        public async Task<IActionResult> SendInvite([FromBody] MailRequest mailRequest)
+        {
+            var mailContent = mailRequest.ToMailContent();
+            var mailResponse = await _mailService.SendAsync(mailContent);
+            return Json(mailResponse, _defaultSettings);
         }
 
         [Route("invite")]
@@ -198,5 +212,7 @@ namespace DataEstate.Payment.Controllers
             var subscription = _subscriptionService.CreateSubscription(customer.Id, plans);
             return View("InvitationSubmitted", subscription);
         }
+
+
     }
 }
