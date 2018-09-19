@@ -4,16 +4,18 @@
 <div class="card">
 	<header class="section-header container">
 		<div class="row">
-			<div class="col-md-12">
-				<h1>@ViewBag.ErrorTitle</h1>
-			</div>
+            <div class="col-md-12">
+
+                <h1>@ViewBag.ErrorTitle</h1>
+                <p class="page-status">Response Code: @Context.Response.StatusCode</p>
+            </div>
 		</div>
 	</header>
 	<div class="divier"></div>
 	<section class="section container">
 		<div class="row">
 			<div class="col-md-12">
-				@ViewBag.ErrorDescription
+				@Html.Raw(@ViewBag.ErrorDescription)
 			</div>
 		</div>
 	</section>

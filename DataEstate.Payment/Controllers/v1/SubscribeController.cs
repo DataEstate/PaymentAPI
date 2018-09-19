@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Antiforgery;
 
 namespace DataEstate.Payment.Controllers
 {
-    [Route("[controller]")]
+    [Route("v1/[controller]")]
     public class SubscribeController : Controller
     {
         private JsonSerializerSettings _defaultSettings;
@@ -46,27 +46,51 @@ namespace DataEstate.Payment.Controllers
         {
             if (inviteString != null)
             {
-                var invitationJson = EncryptionHelper.DecryptString(inviteString);
-                var invitation = JsonConvert.DeserializeObject<SubscriptionProposal>(invitationJson);
-
-                if (invitation.Subscription != null && invitation.Subscription.Items != null)
+                try
                 {
-                    foreach (var item in invitation.Subscription.Items)
+                    var invitationJson = EncryptionHelper.DecryptString(inviteString);
+                    var invitation = JsonConvert.DeserializeObject<SubscriptionProposal>(invitationJson);
+                    //Check Expiry. Cancel if expired. 
+                    if (invitation.ExpiryDate != null && invitation.ExpiryDate < DateTime.Now)
                     {
-                        //Find plans
-                        if (item.PlanId != null && item.Plan == null)
+                        ViewData["ErrorTitle"] = "Your invitation has expired. ";
+                        ViewData["ErrorDescription"] = "Unfortunately this invitation has expired. Please contact Data Estate to have it sent again.";
+                        return View("InvitationError");
+                    }
+                    //TODO: Check for invitation ID and Email, to avoid duplication. 
+
+                    //Subscription
+                    if (invitation.Subscription != null && invitation.Subscription.Items != null)
+                    {
+                        foreach (var item in invitation.Subscription.Items)
                         {
-                            item.Plan = _subscriptionService.GetPlan(item.PlanId);
-                            if (item.Plan.ProductId != null)
+                            //Find plans
+                            if (item.PlanId != null && item.Plan == null)
                             {
-                                item.Plan.Product = _subscriptionService.GetProduct(item.Plan.ProductId);
+                                item.Plan = _subscriptionService.GetPlan(item.PlanId);
+                                if (item.Plan.ProductId != null)
+                                {
+                                    item.Plan.Product = _subscriptionService.GetProduct(item.Plan.ProductId);
+                                }
                             }
                         }
                     }
+                    ViewData["Title"] = "Subscription Invitation | Data Estate Connector";
+                    ViewData["BannerTitle"] = "Data Estate Connector";
+                    return View("Invitation", invitation);
                 }
-                ViewData["Title"] = "Subscription Invitation | Data Estate Connector";
-                ViewData["BannerTitle"] = "Data Estate Connector";
-                return View("Invitation", invitation);
+                catch (ArgumentException ae) {
+                    Response.StatusCode = 500;
+                    ViewData["ErrorTitle"] = "There's a problem with the server setup. ";
+                    ViewData["ErrorDescription"] = $"There's a problem with the encryption of this invite ID on the server. Please report this issue to <a href='mailto:support@dataestate.com.au'>Data Estate</a> and wait for the team to resolve. Issue found: <br><p><em>{ae.Message}</em></p>";
+                    return View("InvitationError");
+                }
+                catch (Exception e) {
+                    Response.StatusCode = 400;
+                    ViewData["ErrorTitle"] = "There's a problem with your request";
+                    ViewData["ErrorDescription"] = $"Following problems have been found with your request: {e.Message}";
+                    return View("InvitationError");
+                }
             }
             else 
             {
@@ -80,9 +104,6 @@ namespace DataEstate.Payment.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult InviteSubmission([FromForm] SubscriptionFormData subscriptionFormData)
         {
-            //var formData = new StreamReader(Request.Body).ReadToEnd();
-
-            //var queryData = QueryHelpers.ParseQuery(formData);
 
             //TODO: Move to service or helper?
             /** Process Plans **/

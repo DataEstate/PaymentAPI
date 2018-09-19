@@ -52,9 +52,6 @@
     <None Include="wwwroot\js\invitation.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="wwwroot\images\powered_by_stripe%402x.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="hostsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

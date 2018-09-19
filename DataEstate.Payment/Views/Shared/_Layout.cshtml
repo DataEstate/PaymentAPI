@@ -3,7 +3,10 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>@ViewBag.Title</title>
+		<title>@if (ViewBag.Title == null || ViewBag.Title == "") {
+            <text>Data Estate Subscription</text>
+            }
+        </title>
 		<!-- Bootstrap-->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<!-- Add DEV/Release separation later-->
@@ -15,10 +18,17 @@
 			<div class="logo-container">
 				<img class="logo" src="~/images/shield.png" alt="Data Estate Symbol (white)" />
 			</div>
-			<nav class="header-content">
-				<!-- Navigation-->
-				<h2>@ViewBag.BannerTitle</h2>
-			</nav>
+            <nav class="header-content">
+                <!-- Navigation-->
+                @if (ViewBag.BannerTitle != null && ViewBag.BannerTitle != "")
+                {
+                <h2>@ViewBag.BannerTitle</h2>
+                }
+                else
+                {
+                <h2>Data Estate Subscription</h2>
+                }
+            </nav>
 		</header>
 		<main id="main-content">
 			@RenderBody()
