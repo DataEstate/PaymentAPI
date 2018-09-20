@@ -8,14 +8,16 @@ using Newtonsoft.Json;
 using DataEstate.Stripe.Models.Dtos;
 using DataEstate.Payment.Models.Dtos;
 using Stripe;
-using Microsoft.AspNetCore.Antiforgery;
 using DataEstate.Mailer.Models.Dtos;
 using DataEstate.Mailer.Interfaces;
 using DataEstate.Mailer.Extensions;
 using DataEstate.Payment.Models.Pages;
+using DataEstate.Stripe.Extensions;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
+/***
+ * This is a list of Pages for client interactions regarding subscriptions. 
+ */
 namespace DataEstate.Payment.Controllers
 {
     [Route("v1/[controller]")]
@@ -38,13 +40,7 @@ namespace DataEstate.Payment.Controllers
             _mailService = mailService;
             _templateService = templateService;
         }
-        
-        // GET: /<controller>/
-        public IActionResult Index()
-        {
-            return View();
-        }
-
+       
         [Route("invite")]
         [HttpGet("invite")]
         public IActionResult Invite([FromQuery(Name = "id")]string inviteString = null)
@@ -63,8 +59,8 @@ namespace DataEstate.Payment.Controllers
                         return View("InvitationError");
                     }
                     //TODO: Check for invitation ID and Email, to avoid duplication. 
-
                     //Subscription
+                    var subtotal = 0M;
                     if (invitation.Subscription != null && invitation.Subscription.Items != null)
                     {
                         foreach (var item in invitation.Subscription.Items)
@@ -78,10 +74,17 @@ namespace DataEstate.Payment.Controllers
                                     item.Plan.Product = _subscriptionService.GetProduct(item.Plan.ProductId);
                                 }
                             }
+                            subtotal += item.Plan.Amount * (decimal)item.Quantity;
                         }
                     }
+                    var taxTotal = (invitation.Subscription.Tax / 100) * subtotal;
+                    var total = Math.Round(subtotal + taxTotal, 2, MidpointRounding.AwayFromZero);
                     ViewData["Title"] = "Subscription Invitation | Data Estate Connector";
                     ViewData["BannerTitle"] = "Data Estate Connector";
+                    ViewData["Subtotal"] = subtotal.ToDollarAmount(true);
+                    ViewData["TaxRate"] = invitation.Subscription.Tax;
+                    ViewData["Tax"] = taxTotal.ToDollarAmount(true); //Always GST for now. 
+                    ViewData["Total"] = total.ToDollarAmount(true);
                     return View("Invitation", invitation);
                 }
                 catch (ArgumentException ae) {
@@ -104,6 +107,7 @@ namespace DataEstate.Payment.Controllers
             }
         }
 
+        /*
         [Route("invite/send")]
         [HttpPost()]
         public async Task<IActionResult> SendInvite([FromBody] MailRequest mailRequest)
@@ -116,14 +120,14 @@ namespace DataEstate.Payment.Controllers
                 BrandName = "Data Estate Pty Ltd",
                 LogoUrl = logoUrl
             };
-            var emailString = await _templateService.RenderTemplateAsync("Emails/SubscriptionReceipt", pageModel);
+            var emailString = await _templateService.RenderTemplateAsync("E/SubscriptionReceipt", pageModel);
 
             var mailContent = mailRequest.ToMailContent();
             mailContent.Html = emailString;
             //return Content(emailString, "text/html");
             var mailResponse = await _mailService.SendAsync(mailContent);
             return Json(mailResponse, _defaultSettings);
-        }
+        }*/
 
         [Route("invite")]
         [HttpPost()]
@@ -175,9 +179,17 @@ namespace DataEstate.Payment.Controllers
                     Email = subscriptionFormData.Email,
                     DefaultSource = subscriptionFormData.CardToken
                 };
+                if (subscriptionFormData.BusinessName != null)
+                {
+                    customerCreate.BusinessName = subscriptionFormData.BusinessName;
+                }
                 if (subscriptionFormData.Name != null)
                 {
                     customerCreate.Name = subscriptionFormData.Name;
+                }
+                if (subscriptionFormData.Abn != null)
+                {
+                    customerCreate.Abn = subscriptionFormData.Abn;
                 }
                 customer = _customerService.CreateCustomer(customerCreate);
             }
@@ -219,7 +231,14 @@ namespace DataEstate.Payment.Controllers
                 ViewData["ErrorDescription"] = "Client creation failed, and therefore was not able to proceed with subscription. No transaction or subscription occured. ";
                 return View("InvitationError");
             }
-            var subscription = _subscriptionService.CreateSubscription(customer.Id, plans);
+            var subscriptionCreate = new Subscription
+            {
+                CustomerId = customer.Id,
+                Items = plans, 
+                Tax = subscriptionFormData.TaxPercent == null ? 10M : (decimal)subscriptionFormData.TaxPercent
+            };
+                
+            var subscription = _subscriptionService.CreateSubscription(subscriptionCreate);
 
             return View("InvitationSubmitted", subscription);
         }

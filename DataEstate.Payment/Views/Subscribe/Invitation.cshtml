@@ -43,6 +43,7 @@
 				<div class="col-md-12">
 					@if (Model.Subscription.Items != null && Model.Subscription.Items.Count > 0)
 					{
+					<!-- SUBSCRIPTION PLANS-->
 					<ul class="subscription-list">
 						@for (var i = 0; i < Model.Subscription.Items.Count; i++)
 						{
@@ -66,13 +67,28 @@
 										<span class="plan-amount-label">at </span>
 										<span class="plan-amount">@item.Plan.Amount.ToDollarAmount(true)</span> /
 										<span class="plan-interval">@item.Plan.Interval.ToString()</span>
+										<input type="hidden" name="taxPercent" value="@Model.Subscription.Tax" />
+										<span class="plan-amount-condition">(ex. GST)</span>
 									</div>
 								</div>
 							</div>
 						</li>
 						}
 					</ul>
+					<!-- SUBSCRIPTION PLANS-->
 					}
+				</div>
+			</div>
+			<div class="row">
+				<div id="amount-total" class="col-md-5 col-md-push-7">
+					<dl>
+						<dt class="subtotal">Subtotal</dt>
+						<dd>@ViewBag.Subtotal</dd>
+						<dt class="tax">Tax (GST 10%)</dt>
+						<dd>@ViewBag.Tax</dd>
+						<dt class="total">Total</dt>
+						<dd class="total">@ViewBag.Total</dd>
+					</dl>
 				</div>
 			</div>
 			}
@@ -86,14 +102,20 @@
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
-						<label for="businessName" class="mandatory">Business Name</label>
-						<input type="text" class="form-control" name="name" id="businessName" placeholder="e.g. Data Estate Pty. Ltd." required/>
+						<label for="email" class="mandatory">Email</label>
+						<input type="email" class="form-control" name="email" id="email" placeholder="e.g. client@business.com" required />
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
-						<label for="email" class="mandatory">Email</label>
-						<input type="email" class="form-control" name="email" id="email" placeholder="e.g. client@business.com" required/>
+						<label for="name">Contact Name</label>
+						<input type="text" class="form-control" name="name" id="name" placeholder="e.g. Jenny Smith (optional)" />
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<label for="businessName" class="mandatory">Business Name</label>
+						<input type="text" class="form-control" name="businessName" id="businessName" placeholder="e.g. Data Estate Pty. Ltd." required />
 					</div>
 				</div>
 			</div>

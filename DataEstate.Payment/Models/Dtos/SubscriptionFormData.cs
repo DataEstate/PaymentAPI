@@ -11,6 +11,14 @@ namespace DataEstate.Payment.Models.Dtos
         [FromForm(Name = "name")]
         public string Name { get; set; }
 
+        [JsonProperty("businessName")]
+        [FromForm(Name = "businessName")]
+        public string BusinessName { get; set; }
+
+        [JsonProperty("abn")]
+        [FromForm(Name = "abn")]
+        public string Abn { get; set; }
+
         [JsonProperty("email")]
         [FromForm(Name = "email")]
         public string Email { get; set; }
@@ -34,5 +42,9 @@ namespace DataEstate.Payment.Models.Dtos
         [JsonProperty("plans")]
         [FromForm(Name = "plans")]
         public List<SubscriptionFormPlan> Plans { get; set; }
+
+        [JsonProperty("taxPercent")]
+        [FromForm(Name= "taxPercent")]
+        public decimal? TaxPercent { get; set; }
     }
 }

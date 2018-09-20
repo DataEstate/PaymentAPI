@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using DataEstate.Payment.Models.Pages;
 using DataEstate.Payment.Models.Dtos;
+using DataEstate.Mailer.Models.Dtos;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DataEstate.Payment.Controllers.v1
@@ -76,8 +77,21 @@ namespace DataEstate.Payment.Controllers.v1
                     Invoice = paymentInvoice
                 };
                 invoicePage.Invoice.Paid = true;
-                var invoiceSuccessEmail = _templateService.RenderTemplateAsync("Emails/InvoiceSucceeded", invoicePage);
-                return Content(invoiceSuccessEmail.Result, "text/html");
+                var invoiceSuccessEmail = _templateService.RenderTemplateAsync("Emails/InvoiceSucceeded", invoicePage).Result;
+                var recipients = new List<string>();
+                var customerName = paymentInvoice.Customer.Name == null ? "" : paymentInvoice.Customer.Name;
+                recipients.Add(
+                    $"{customerName} <{paymentInvoice.Customer.Email}>"
+                );
+                //Build Mail Object
+                var mailContent = new MailContent
+                {
+                    Receivers = recipients,
+                    Subject = $"Data Estate Subscription Invoice {paymentInvoice.InvoiceNumber}",
+                    Html = invoiceSuccessEmail
+                };
+                return Json(_mailService.Send(mailContent), _defaultSettings);
+                //return Content(invoiceSuccessEmail.Result, "text/html");
             }
             catch (Exception e)
             {

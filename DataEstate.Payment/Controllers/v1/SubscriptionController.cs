@@ -12,7 +12,9 @@ using DataEstate.Helpers;
 using System.Net;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
+/***
+ * This is a RESTful API Endpoint for Subscriptions
+ */
 namespace DataEstate.Payment.Controllers
 {
     [Route("v1/[controller]")]

@@ -59,7 +59,7 @@ namespace DataEstate.Stripe.Models.Dtos
         public SubscriptionStatus? Status;
 
         [JsonProperty("tax")]
-        public decimal? Tax;
+        public decimal Tax = 0.1M;
 
         [JsonProperty("trialStart")]
         public DateTime? TrialStart;

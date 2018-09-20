@@ -8,6 +8,7 @@
     <Folder Include="Authorization\" />
     <Folder Include="Authorization\Handlers\" />
     <Folder Include="Authorization\Requirements\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />

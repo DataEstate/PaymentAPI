@@ -41,6 +41,14 @@ namespace DataEstate.Stripe.Extensions
                 {
                     customer.Name = stripeCustomer.Metadata["Name"];
                 }
+                if (stripeCustomer.Metadata.ContainsKey("BusinessName"))
+                {
+                    customer.BusinessName = stripeCustomer.Metadata["BusinessName"];
+                }
+                if (stripeCustomer.Metadata.ContainsKey("abn"))
+                {
+                    customer.Abn = stripeCustomer.Metadata["abn"];
+                }
             }
             return customer;
         }
@@ -82,7 +90,7 @@ namespace DataEstate.Stripe.Extensions
                 SubscriptionEndDate = stripeSubscription.EndedAt, 
                 Meta = stripeSubscription.Metadata,
                 Status = StripeHelpers.ToSubscriptionStatus(stripeSubscription.Status), 
-                Tax = stripeSubscription.TaxPercent, 
+                Tax = stripeSubscription.TaxPercent == null ? 0.1M : (decimal)stripeSubscription.TaxPercent, 
                 TrialStart = stripeSubscription.TrialStart,
                 TrialEnd = stripeSubscription.TrialEnd
             };
@@ -129,7 +137,7 @@ namespace DataEstate.Stripe.Extensions
                 periodStartDate = stripeInvoice.PeriodStart,
                 periodEndDate = stripeInvoice.PeriodEnd,
                 Tax = stripeInvoice.Tax == null ? null : (decimal?)((int)stripeInvoice.Tax).ToDecimalAmount(),
-                TaxPercent = stripeInvoice.TaxPercent == null ? null : (decimal?)((int)stripeInvoice.TaxPercent).ToDecimalAmount()
+                TaxPercent = stripeInvoice.TaxPercent
             };
             //Items
             if (stripeInvoice.StripeInvoiceLineItems != null && stripeInvoice.StripeInvoiceLineItems.TotalCount > 0)

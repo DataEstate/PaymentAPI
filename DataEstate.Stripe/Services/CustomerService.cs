@@ -40,7 +40,7 @@ namespace DataEstate.Stripe.Services
             }
             if (customer.Abn != null)
             {
-                metadata["ABN"] = customer.Abn;
+                metadata["abn"] = customer.Abn;
             }
             if (metadata.Count > 0)
             {

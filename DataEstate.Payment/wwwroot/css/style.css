@@ -139,3 +139,18 @@ label.error, #stripe-error {
 input.error {
     border-color: red;
 }
+#frm-subscription h2 {
+    font-size: 20px;
+}
+#amount-total .total {
+    font-size: 20px;
+}
+
+#amount-total dt, #amount-total dd {
+    display: inline-block;
+    width: 49%;
+    text-align: right;
+}
+span.plan-amount-condition {
+    font-size: 10px;
+}
