@@ -11,6 +11,8 @@ namespace DataEstate.Payment.Models.Pages
 
         public string BrandName = "";
 
+        public string Abn = "13 615 924 224";
+
         //Styles, maybe move later. All Data Estate Styles at the moment. Maybe we can set it to configs. 
         public string LogoUrl { get; set; }
 

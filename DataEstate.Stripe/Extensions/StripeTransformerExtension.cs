@@ -35,6 +35,13 @@ namespace DataEstate.Stripe.Extensions
                 Email = stripeCustomer.Email,
                 DefaultSource = stripeCustomer.DefaultSourceId
             };
+            if (stripeCustomer.Metadata != null)
+            {
+                if (stripeCustomer.Metadata.ContainsKey("Name"))
+                {
+                    customer.Name = stripeCustomer.Metadata["Name"];
+                }
+            }
             return customer;
         }
 
@@ -96,6 +103,66 @@ namespace DataEstate.Stripe.Extensions
                 }
             }
             return subscription;
+        }
+
+        public static PaymentInvoice ToPaymentInvoice(this StripeInvoice stripeInvoice)
+        {
+            var invoice = new PaymentInvoice
+            {
+                Id = stripeInvoice.Id,
+                InvoiceNumber = stripeInvoice.Number,
+                ReceiptNumber = stripeInvoice.ReceiptNumber,
+                AmountDue = stripeInvoice.AmountDue.ToDecimalAmount(),
+                AmountPaid = stripeInvoice.AmountPaid.ToDecimalAmount(),
+                AmountRemaining = stripeInvoice.AmountRemaining.ToDecimalAmount(),
+                AttemptCount = stripeInvoice.AttemptCount,
+                Attempted = stripeInvoice.Attempted,
+                CustomerId = stripeInvoice.CustomerId,
+                ChargeId = stripeInvoice.ChargeId,
+                Description = stripeInvoice.Description,
+                //Todo: Discount
+                DueDate = stripeInvoice.DueDate,
+                HostedInvoiceUrl = stripeInvoice.HostedInvoiceUrl,
+                HostedPdf = stripeInvoice.InvoicePdf,
+                Subtotal = stripeInvoice.Subtotal.ToDecimalAmount(),
+                Total = stripeInvoice.Total.ToDecimalAmount(),
+                periodStartDate = stripeInvoice.PeriodStart,
+                periodEndDate = stripeInvoice.PeriodEnd,
+                Tax = stripeInvoice.Tax == null ? null : (decimal?)((int)stripeInvoice.Tax).ToDecimalAmount(),
+                TaxPercent = stripeInvoice.TaxPercent == null ? null : (decimal?)((int)stripeInvoice.TaxPercent).ToDecimalAmount()
+            };
+            //Items
+            if (stripeInvoice.StripeInvoiceLineItems != null && stripeInvoice.StripeInvoiceLineItems.TotalCount > 0)
+            {
+                invoice.Items = new List<InvoiceItem>();
+                foreach (var lineItem in stripeInvoice.StripeInvoiceLineItems)
+                {
+                    if (lineItem != null)
+                    {
+                        invoice.Items.Add(lineItem.ToInvoiceItem()); 
+                    }
+                }
+            }
+            return invoice;
+        }
+
+        public static InvoiceItem ToInvoiceItem(this StripeInvoiceLineItem lineItem)
+        {
+            if (lineItem == null)
+            {
+                return null;
+            }
+            var invoiceItem = new InvoiceItem
+            {
+                Id = lineItem.Id,
+                Quantity = lineItem.Quantity == null ? 1 : (int)lineItem.Quantity,
+                Plan = lineItem.Plan.ToSubscriptionPlan(),
+                CurrentPeriodEndDate = lineItem.StripePeriod.End,
+                CurrentPeriodStartDate = lineItem.StripePeriod.Start,
+                SubscriptionId = lineItem.SubscriptionId,
+                Amount = lineItem.Amount.ToDecimalAmount()
+            };
+            return invoiceItem;
         }
         /**** TO STRIPE ****/
         public static StripePlanListOptions ToStripePlanListOptions(this PlanListFilterOptions planFilter)

@@ -49,5 +49,10 @@ namespace DataEstate.Stripe.Services
             var stripeCustomer = _customerService.Create(createOptions);
             return stripeCustomer.ToCustomer();
         }
+
+        public Customer GetCustomer(string customerId)
+        {
+            return _customerService.Get(customerId).ToCustomer();
+        }
     }
 }

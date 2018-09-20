@@ -6,5 +6,7 @@ namespace DataEstate.Stripe.Interfaces
     public interface ICustomerService
     {
         Customer CreateCustomer(Customer customer);
+
+        Customer GetCustomer(string customerId);
     }
 }

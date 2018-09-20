@@ -1,0 +1,178 @@
+﻿@{
+	Layout = "_LayoutEmail";
+	@model DataEstate.Payment.Models.Pages.InvoicePageModel
+	@namespace DataEstate.Stripe.Extensions
+}
+<table cellpadding="15" cellspacing="0" style="background-color: white; width: 600px; font-family: @Model.PrimaryFont; color: @Model.BrandFontColor">
+	<tr>
+		<td colspan="3" id="top-margin" height="30" style="background-color: #ededed;"></td>
+	</tr>
+	<!-- Header-->
+	<tr id="header-section" style="font-family: @Model.PrimaryFont; color: @Model.BrandHeaderFontColor; background-color: @Model.BrandHeaderColor">
+		<td></td>
+		<td style="text-align: center">
+			<img src="@Model.LogoUrl" style="max-height: 60px; height: 60px; min-height: 60px" />
+			<h3 style="font-weight:lighter;">@Model.BrandName</h3>
+			<div style="font-size: 12px">@(DateTime.Now.ToString("d MMMM yyyy"))</div>
+		</td>
+		<td></td>
+	</tr>
+	<!-- Body-->
+	<tr>
+		<td></td>
+		<td style="text-align: center;">
+			<div style="min-height:400px;">
+				<h1 style="font-weight:normal">@Model.Title</h1>
+				<div style="color:green;">
+					<strong>Status: </strong>
+					@if (Model.Invoice.Paid)
+					{
+					<span>Paid</span>
+					}
+					else
+					{
+					<span>Payment Pending</span>
+					}
+				</div>
+				<div>@Model.Subtitle</div>
+				<!-- Start Invoice-->
+				@if (Model.Invoice != null)
+				{
+	<div style="height: 20px"></div>
+					/**/
+	@if (Model.Invoice.InvoiceNumber != null)
+	{
+		<div style="color:#666666; font-size: 14px; height: 22px; vertical-align:top">Invoice Number: @Model.Invoice.InvoiceNumber</div>
+	}
+	<table width="507">
+		<tr>
+		<!-- Customer -->
+		@if (Model.Invoice.Customer != null)
+		{
+			<td style="color:#666666;text-align:left; font-size: 14px; height: 18px;">
+				<div style="font-weight:bold">
+					Bill To:
+				</div>
+				<div>
+					@Model.Invoice.Customer.Name <br />(@Model.Invoice.Customer.Email)
+				</div>
+			</td>
+		}
+		<td style="color:#666666;text-align:right; font-size: 14px; height: 18px;">
+			<div style="font-weight:bold">
+			Amount:
+			</div>
+			<div>
+			@Model.Invoice.AmountPaid.ToDollarAmount(true)
+			</div>
+		</td>
+		</tr>
+	</table>
+	<div style="height: 20px"></div>
+	<h3 style="text-align: left;">Summary</h3>
+	<div>
+		<!--Invoice Details-->
+		<table style="font-size:12px; background-color: #f2f2f2; width:507px;" cellspacing="0">
+			<tr>
+				<td colspan="6" height="15px"></td>
+			</tr>
+			<!-- Invoice Header-->
+			<tr>
+				<td width="15px" style="border-bottom: 2px solid #444444;"></td>
+				<td style="font-weight: bold; border-bottom: 2px solid #444444;">Description</td>
+				<td style="font-weight: bold; width:50px; border-bottom: 2px solid #444444;">Qty</td>
+				<td style="font-weight: bold; width:100px; border-bottom: 2px solid #444444;">Unit price (ex GST)</td>
+				<td style="font-weight: bold; width:80px; border-bottom: 2px solid #444444;">Amount</td>
+				<td width="15px" style="border-bottom: 2px solid #444444;"></td>
+			</tr>
+			<!-- Invoice Items-->
+			@foreach (var item in Model.Invoice.Items)
+			{
+				@if (item.Plan != null)
+				{
+					<tr>
+						<td width="15px" style="height:60px;"></td>
+						<td style="height:60px;">
+							<div class="subscriptionId">
+								@item.SubscriptionId
+							</div>
+							<div class="invoice-description">
+								Subscription ID: @item.SubscriptionId<br />
+								<span style="font-size: 16px;">
+								@item.Plan.Name
+								</span>
+							</div>
+						</td>
+						<td style="height:60px; text-align: right;">
+							@item.Quantity
+						</td>
+						<td style="height:60px;text-align: right;">
+							@item.Plan.Amount.ToDollarAmount(true) / @item.Plan.Interval.ToString()
+						</td>
+						<td width="15px" style="height:60px; text-align: right;">
+							@item.Amount.ToDollarAmount(true)
+						</td>
+					</tr>
+				}
+			}
+			<!-- End invoice Items -->
+			<tr>
+				<td width="15px" style="height:30px; vertical-align:bottom; border-top: 2px solid #444444"></td>
+				<td colspan="2" style="height:30px; vertical-align:bottom; border-top: 2px solid #444444"></td>
+				<td style="height:30px; vertical-align:bottom; border-top: 2px solid #444444">Subtotal</td>
+				<td style="height:30px; vertical-align:bottom; border-top: 2px solid #444444; text-align: right;">@Model.Invoice.Subtotal.ToDollarAmount(true)</td>
+				<td width="15px" style="height:30px; vertical-align:bottom; border-top: 2px solid #444444"></td>
+			</tr>
+			@if (Model.Invoice.Tax != null)
+			{
+ 			<tr>
+				<td width="15px"></td>
+				<td colspan="2"></td>
+				<td>GST (@Model.Invoice.TaxPercent * 100)%</td>
+				<td style="text-align: right">@Model.Invoice.Tax</td>
+				<td width="15px"></td>
+			</tr>
+			}
+			<tr>
+				<td width="15px"></td>
+				<td colspan="2"></td>
+				<td style="font-size:16px;">Total</td>
+				<td style="font-size:16px; text-align: right;">@Model.Invoice.Total.ToDollarAmount(true)</td>
+				<td width="15px"></td>
+			</tr>
+			<tr>
+				<td colspan="6" height="15px">
+					<div>Online invoice can be viewed <a href="@Model.Invoice.HostedInvoiceUrl">here</a></div>
+				</td>
+			</tr>
+		</table>
+		<!-- Invoice Details End-->
+		<div style="border-bottom: 1px solid #cecece; height: 20px;"></div>
+		<div style="height:20px"></div>
+		<div style="text-align:left; font-size: 14px;">
+			If you have any questions, please contact us at
+			<a href="mailto:accounts@dataestate.com.au">accounts@dataestate.com.au</a>.
+			You can cancel your subscription at anytime by sending an email to:
+			<a href="mailto:cancellation@dataestate.com.au">cancellation@dataestate.com.au</a>
+			with your subscription ID above at least 3 business days before the billing period ends.
+			This will ensure that your email
+			Once cancellation is confirmed, your subscription and service will
+			end at the end of the current billing period <strong>@(((DateTime)Model.Invoice.periodEndDate).ToString("d MMMM yyyy"))</strong>
+		</div>
+	</div>
+}
+				<!-- End Invoice -->
+			</div>
+		</td>
+		<td></td>
+	</tr>
+	<!-- Footer -->
+	<tr style="background-color: #323232; color: #dddddd; text-align: center; font-size: 10px;">
+		<td></td>
+		<td>@Model.BrandName | ABN: @Model.Abn</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td colspan="3" id="bottom-margin" height="50" style="background-color: #ededed;"></td>
+	</tr>
+</table>

@@ -16,5 +16,11 @@ namespace DataEstate.Stripe.Models.Dtos
 
         [JsonProperty("plan")]
         public SubscriptionPlan Plan;
+
+        [JsonProperty("currentPeriodEnd")]
+        public DateTime? CurrentPeriodEndDate;
+
+        [JsonProperty("currentPeriodStart")]
+        public DateTime? CurrentPeriodStartDate;
     }
 }
