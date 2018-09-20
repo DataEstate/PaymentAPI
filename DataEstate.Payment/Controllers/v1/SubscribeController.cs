@@ -4,17 +4,15 @@ using System.Threading.Tasks;
 using DataEstate.Stripe.Interfaces;
 using DataEstate.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using DataEstate.Stripe.Models.Dtos;
 using DataEstate.Payment.Models.Dtos;
-using System.IO;
-using Microsoft.Extensions.Primitives;
 using Stripe;
 using Microsoft.AspNetCore.Antiforgery;
 using DataEstate.Mailer.Models.Dtos;
 using DataEstate.Mailer.Interfaces;
 using DataEstate.Mailer.Extensions;
+using DataEstate.Payment.Models.Pages;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,8 +25,9 @@ namespace DataEstate.Payment.Controllers
         private ISubscriptionService _subscriptionService;
         private ICustomerService _customerService;
         private IMailService _mailService;
+        private ITemplateService _templateService;
 
-        public SubscribeController(ISubscriptionService subscriptionService, ICustomerService customerService, IMailService mailService)
+        public SubscribeController(ISubscriptionService subscriptionService, ICustomerService customerService, IMailService mailService, ITemplateService templateService)
         {
             _subscriptionService = subscriptionService;
             _customerService = customerService;
@@ -37,8 +36,9 @@ namespace DataEstate.Payment.Controllers
                 NullValueHandling = NullValueHandling.Ignore
             };
             _mailService = mailService;
+            _templateService = templateService;
         }
-
+        
         // GET: /<controller>/
         public IActionResult Index()
         {
@@ -108,7 +108,19 @@ namespace DataEstate.Payment.Controllers
         [HttpPost()]
         public async Task<IActionResult> SendInvite([FromBody] MailRequest mailRequest)
         {
+            var logoUrl = $"{Request.Scheme}://{Request.Host}/images/shield.png";
+            var pageModel = new PageModel
+            {
+                Title = "Subscription Receipt",
+                Subtitle = "Thank you for subscribing to Data Estate.",
+                BrandName = "Data Estate Pty Ltd",
+                LogoUrl = logoUrl
+            };
+            var emailString = await _templateService.RenderTemplateAsync("Emails/SubscriptionReceipt", pageModel);
+
             var mailContent = mailRequest.ToMailContent();
+            mailContent.Html = emailString;
+            //return Content(emailString, "text/html");
             var mailResponse = await _mailService.SendAsync(mailContent);
             return Json(mailResponse, _defaultSettings);
         }
@@ -118,7 +130,6 @@ namespace DataEstate.Payment.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult InviteSubmission([FromForm] SubscriptionFormData subscriptionFormData)
         {
-
             //TODO: Move to service or helper?
             /** Process Plans **/
             //Stop if no plans to subscribe. 
@@ -207,9 +218,9 @@ namespace DataEstate.Payment.Controllers
                 ViewData["ErrorTitle"] = "There's a problem with your request";
                 ViewData["ErrorDescription"] = "Client creation failed, and therefore was not able to proceed with subscription. No transaction or subscription occured. ";
                 return View("InvitationError");
-
             }
             var subscription = _subscriptionService.CreateSubscription(customer.Id, plans);
+
             return View("InvitationSubmitted", subscription);
         }
 

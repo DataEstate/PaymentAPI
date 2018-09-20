@@ -15,6 +15,7 @@ namespace DataEstate.Mailer.Services
 {
     /// <summary>
     /// @original author Willem Meints - https://gist.github.com/wmeints
+    /// NOTE: Add this as Scope not Singleton. 
     /// </summary>
     public class TemplateService : ITemplateService
     {
@@ -41,6 +42,7 @@ namespace DataEstate.Mailer.Services
             using (var outputWriter = new StringWriter())
             {
                 var viewResult = _viewEngine.FindView(actionContext, filename, false);
+                //var viewResult = _viewEngine.GetView(filename);
                 var viewDictionary = new ViewDataDictionary<TViewModel>(new EmptyModelMetadataProvider(), new ModelStateDictionary())
                 {
                     Model = viewModel

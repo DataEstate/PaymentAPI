@@ -17,5 +17,11 @@
   },
   "Encryption": {
     "Key": "" // <-------- 246 bit Encryption Key
+  },
+  "MailSettings": {
+    "Type": "MailGun", //<----- Currently only supports MailGun
+    "Host": "https://api.mailgun.net/v3/mg.dataestate.com.au",
+    "ApiKey": "", //<-------- MailGun Key
+    "DefaultSender": "" //<----- Default Sender when no sender was specified. 
   }
 }

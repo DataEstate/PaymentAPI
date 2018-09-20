@@ -1,0 +1,21 @@
+﻿@*
+  Please note that this template is intended for EMAILS! Please ensure the following when you update:
+	* Use tables rather than positioning elements.
+	* Default to 600px width.
+	* No external stylehseet,
+<style>
+	tag is probably not an option here either. Inline stylesheet is probably the best...
+	*@
+	<html style="margin:0; padding: 0">
+	<body style="margin:0; padding: 0">
+		<div style="text-align: center; background-color: #ededed;" >
+			<table class="content-wrapper" align="center" style="background-color: #ededed;border:0; border-collapse:collapse; margin:0 auto!important; padding:0; max-width:600px; min-width:600px; width:600px" >
+				<tr>
+					<td>
+						@RenderBody()
+					</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+	</html>

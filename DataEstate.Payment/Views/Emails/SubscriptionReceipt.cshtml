@@ -1,0 +1,99 @@
+﻿@*
+  Please note that this template is intended for EMAILS! Please ensure the following when you update:
+	* Use tables rather than positioning elements. 
+	* Default to 600px width. 
+	* No external stylehseet, <style> tag is probably not an option here either. Inline stylesheet is probably the best...
+*@
+@{
+		Layout = "_LayoutEmail";
+		@model DataEstate.Payment.Models.Pages.PageModel;
+}
+<table cellpadding="15" cellspacing="0" style="background-color: white; width: 600px; font-family: @Model.PrimaryFont; color: @Model.BrandFontColor">
+	<tr>
+		<td colspan="3" id="top-margin" height="30" style="background-color: #ededed;"></td>
+	</tr>
+	<!-- Header-->
+	<tr id="header-section" style="font-family: @Model.PrimaryFont; color: @Model.BrandHeaderFontColor; background-color: @Model.BrandHeaderColor">
+		<td></td>
+		<td style="text-align: center">
+			<img src="@Model.LogoUrl" style="max-height: 60px; height: 60px; min-height: 60px" />
+			<h3 style="font-weight:lighter;">@Model.BrandName</h3>
+			<div style="font-size: 12px">11 September 2018</div>
+		</td>
+		<td></td>
+	</tr>
+	<!-- Body-->
+	<tr>
+		<td></td>
+		<td style="text-align: center;">
+			<div style="min-height:400px;">
+				<h1 style="font-weight:normal">@Model.Title</h1>
+				<div>@Model.Subtitle</div>
+				<div style="height: 20px"></div>
+				<div style="color:#666666;">Invoice Reference: inv_1234123412341234</div>
+				<div style="color:#666666;">Invoice Amount: $50.00</div>
+
+				<div style="height: 20px"></div>
+				<h3 style="text-align: left;">Subscription Summary</h3>
+				<div>
+					<!--Invoice Details-->
+					<table style="font-size:12px; background-color: #f2f2f2; width:507px;">
+						<tr>
+							<td colspan="4" height="15px"></td>
+						</tr>
+						<tr>
+							<td width="15px"></td>
+							<td style="font-weight:bold;">Subscription ID: </td>
+							<td>sub_12341234123412341234</td>
+							<td width="15px"></td>
+						</tr>
+						<tr>
+							<td width="15px"></td>
+							<td style="font-weight:bold;">Customer ID: </td>
+							<td>cus_12341234123412341234</td>
+							<td width="15px"></td>
+						</tr>
+						<tr>
+							<td width="15px"></td>
+							<td colspan="2" style="font-weight: bold;">
+								Plan Details
+							</td>
+							<td width="15px"></td>
+						</tr>
+						<tr>
+							<td width="15px"></td>
+							<td colspan="2">
+								Data Estate WordPress Plugin x 2 - $50/month
+							</td>
+							<td width="15px"></td>
+						</tr>
+						<tr>
+							<td colspan="4" height="15px"></td>
+						</tr>
+					</table>
+					<!-- Invoice Details End-->
+					<div style="border-bottom: 1px solid #cecece; height: 20px;"></div>
+					<div style="height:20px"></div>
+					<div style="text-align:left; font-size: 14px;">
+						If you have any questions, please contact us at
+						<a href="mailto:accounts@dataestate.com.au">accounts@dataestate.com.au</a>. 
+						You can cancel your subscription at anytime by sending an email to:
+						<a href="mailto:cancellation@dataestate.com.au">cancellation@dataestate.com.au</a>
+						with your subscription ID above at least 3 business days before the billing period ends.
+						This will ensure that your email 
+						Once cancellation is confirmed, your subscription and service will 
+						end at the end of the current billing period <strong>10 October 2018.</strong>
+					</div>
+				</div>
+			</div>
+		</td>
+		<td></td>
+	</tr>
+
+	<!-- Footer -->
+	<tr style="background-color: #323232; color: #dddddd; text-align: center; font-size: 10px;">
+		<td></td>
+		<td>Data Estate Pty Ltd | ABN: 1234 1234 1234</td>
+		<td></td>
+	</tr>
+</table>

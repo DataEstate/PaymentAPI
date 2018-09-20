@@ -42,6 +42,7 @@ namespace DataEstate.Payment
 
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddSingleton<IMailService, MailGunService>();
+            services.AddScoped<ITemplateService, TemplateService>();
             services.AddAuthorization(
                 o =>
                 {
