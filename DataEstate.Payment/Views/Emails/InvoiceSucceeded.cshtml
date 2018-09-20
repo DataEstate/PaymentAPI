@@ -42,7 +42,7 @@
 					/**/
 	@if (Model.Invoice.InvoiceNumber != null)
 	{
-		<div style="color:#666666; font-size: 14px; height: 22px; vertical-align:top">Invoice Number: @Model.Invoice.InvoiceNumber</div>
+		<div style="color:#666666; font-size: 14px; height: 22px; vertical-align:top">Invoice Number: #@Model.Invoice.InvoiceNumber</div>
 	}
 	<table width="507">
 		<tr>
@@ -80,9 +80,9 @@
 			<tr>
 				<td width="15px" style="border-bottom: 2px solid #444444;"></td>
 				<td style="font-weight: bold; border-bottom: 2px solid #444444;">Description</td>
-				<td style="font-weight: bold; width:50px; border-bottom: 2px solid #444444;">Qty</td>
-				<td style="font-weight: bold; width:100px; border-bottom: 2px solid #444444;">Unit price (ex GST)</td>
-				<td style="font-weight: bold; width:80px; border-bottom: 2px solid #444444;">Amount</td>
+				<td style="font-weight: bold; width:60px; border-bottom: 2px solid #444444; text-align:right">Qty</td>
+				<td style="font-weight: bold; width:100px; border-bottom: 2px solid #444444; text-align:right">Unit price (ex GST)</td>
+				<td style="font-weight: bold; width:80px; border-bottom: 2px solid #444444; text-align:right">Amount</td>
 				<td width="15px" style="border-bottom: 2px solid #444444;"></td>
 			</tr>
 			<!-- Invoice Items-->
@@ -93,14 +93,14 @@
 					<tr>
 						<td width="15px" style="height:60px;"></td>
 						<td style="height:60px;">
-							<div class="subscriptionId">
-								@item.SubscriptionId
-							</div>
 							<div class="invoice-description">
 								Subscription ID: @item.SubscriptionId<br />
 								<span style="font-size: 16px;">
 								@item.Plan.Name
 								</span>
+							</div>
+							<div style="font-size:10px;">
+							@(((DateTime)item.CurrentPeriodEndDate).ToString("d MMMM yyyy"))
 							</div>
 						</td>
 						<td style="height:60px; text-align: right;">
@@ -155,9 +155,8 @@
 			You can cancel your subscription at anytime by sending an email to:
 			<a href="mailto:cancellation@dataestate.com.au">cancellation@dataestate.com.au</a>
 			with your subscription ID above at least 3 business days before the billing period ends.
-			This will ensure that your email
 			Once cancellation is confirmed, your subscription and service will
-			end at the end of the current billing period <strong>@(((DateTime)Model.Invoice.periodEndDate).ToString("d MMMM yyyy"))</strong>
+			end at the end of the current billing period.
 		</div>
 	</div>
 }
