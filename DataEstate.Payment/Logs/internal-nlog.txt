@@ -1,0 +1,120 @@
+2018-09-26 12:53:19.1743 Info Message Template Auto Format enabled
+2018-09-26 12:53:19.2226 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-26 12:53:19.3870 Info Adding target File Target[allfile]
+2018-09-26 12:53:19.4064 Info Adding target File Target[ownFile-web]
+2018-09-26 12:53:19.4137 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-26 12:53:19.5052 Info Found 45 configuration items
+2018-09-26 12:59:00.0033 Info Message Template Auto Format enabled
+2018-09-26 12:59:00.0147 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-26 12:59:00.1265 Info Adding target File Target[allfile]
+2018-09-26 12:59:00.1431 Info Adding target File Target[ownFile-web]
+2018-09-26 12:59:00.1495 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-26 12:59:00.1693 Info Found 45 configuration items
+2018-09-26 13:52:55.3499 Info Message Template Auto Format enabled
+2018-09-26 13:52:55.4216 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-26 13:52:55.6835 Info Adding target File Target[allfile]
+2018-09-26 13:52:55.7177 Info Adding target File Target[ownFile-web]
+2018-09-26 13:52:55.7244 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-26 13:52:55.7467 Info Found 45 configuration items
+2018-09-26 14:06:00.2782 Info Message Template Auto Format enabled
+2018-09-26 14:06:00.2893 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-26 14:06:00.3903 Info Adding target File Target[allfile]
+2018-09-26 14:06:00.4094 Info Adding target File Target[ownFile-web]
+2018-09-26 14:06:00.4150 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-26 14:06:00.4337 Info Found 45 configuration items
+2018-09-26 14:26:44.0735 Info Message Template Auto Format enabled
+2018-09-26 14:26:44.2278 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-26 14:26:44.4034 Info Adding target File Target[allfile]
+2018-09-26 14:26:44.4231 Info Adding target File Target[ownFile-web]
+2018-09-26 14:26:44.4316 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-26 14:26:44.4513 Info Found 45 configuration items
+2018-09-26 15:07:45.8933 Info Message Template Auto Format enabled
+2018-09-26 15:07:45.9147 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-26 15:07:46.0949 Info Adding target File Target[allfile]
+2018-09-26 15:07:46.1115 Info Adding target File Target[ownFile-web]
+2018-09-26 15:07:46.1179 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-26 15:07:46.1425 Info Found 45 configuration items
+2018-09-26 15:13:47.6531 Info Message Template Auto Format enabled
+2018-09-26 15:13:47.6646 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-26 15:13:47.7563 Info Adding target File Target[allfile]
+2018-09-26 15:13:47.7771 Info Adding target File Target[ownFile-web]
+2018-09-26 15:13:47.7840 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-26 15:13:47.8049 Info Found 45 configuration items
+2018-09-26 15:15:36.6215 Info Message Template Auto Format enabled
+2018-09-26 15:15:36.6332 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-26 15:15:36.7573 Info Adding target File Target[allfile]
+2018-09-26 15:15:36.7764 Info Adding target File Target[ownFile-web]
+2018-09-26 15:15:36.7826 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-26 15:15:36.8102 Info Found 45 configuration items
+2018-09-26 15:16:53.8081 Info Message Template Auto Format enabled
+2018-09-26 15:16:53.8215 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-26 15:16:53.9400 Info Adding target File Target[allfile]
+2018-09-26 15:16:53.9603 Info Adding target File Target[ownFile-web]
+2018-09-26 15:16:53.9659 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-26 15:16:53.9893 Info Found 45 configuration items
+2018-09-26 15:18:52.8934 Info Message Template Auto Format enabled
+2018-09-26 15:18:52.9246 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-26 15:18:53.0346 Info Adding target File Target[allfile]
+2018-09-26 15:18:53.0504 Info Adding target File Target[ownFile-web]
+2018-09-26 15:18:53.0563 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-26 15:18:53.0764 Info Found 45 configuration items
+2018-09-26 15:26:51.6681 Info Message Template Auto Format enabled
+2018-09-26 15:26:51.6781 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-26 15:26:51.9702 Info Adding target File Target[allfile]
+2018-09-26 15:26:51.9859 Info Adding target File Target[ownFile-web]
+2018-09-26 15:26:51.9915 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-26 15:26:52.0121 Info Found 45 configuration items
+2018-09-26 15:36:28.5575 Info Message Template Auto Format enabled
+2018-09-26 15:36:28.5700 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-26 15:36:28.6716 Info Adding target File Target[allfile]
+2018-09-26 15:36:28.6906 Info Adding target File Target[ownFile-web]
+2018-09-26 15:36:28.6970 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-26 15:36:28.7188 Info Found 45 configuration items
+2018-09-26 15:39:56.2967 Info Message Template Auto Format enabled
+2018-09-26 15:39:56.3080 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-26 15:39:56.4070 Info Adding target File Target[allfile]
+2018-09-26 15:39:56.4264 Info Adding target File Target[ownFile-web]
+2018-09-26 15:39:56.4327 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-26 15:39:56.4521 Info Found 45 configuration items
+2018-09-26 15:51:10.6769 Info Message Template Auto Format enabled
+2018-09-26 15:51:10.7152 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-26 15:51:10.8783 Info Adding target File Target[allfile]
+2018-09-26 15:51:10.8976 Info Adding target File Target[ownFile-web]
+2018-09-26 15:51:10.9060 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-26 15:51:10.9290 Info Found 45 configuration items
+2018-09-26 16:11:08.1268 Info Message Template Auto Format enabled
+2018-09-26 16:11:08.1373 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-26 16:11:08.2467 Info Adding target File Target[allfile]
+2018-09-26 16:11:08.2638 Info Adding target File Target[ownFile-web]
+2018-09-26 16:11:08.2713 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-26 16:11:08.2896 Info Found 45 configuration items
+2018-09-26 19:56:34.6280 Info Message Template Auto Format enabled
+2018-09-26 19:56:34.6511 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-26 19:56:34.7942 Info Adding target File Target[allfile]
+2018-09-26 19:56:34.8097 Info Adding target File Target[ownFile-web]
+2018-09-26 19:56:34.8188 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-26 19:56:34.8403 Info Found 45 configuration items
+2018-09-27 09:29:09.7612 Info Message Template Auto Format enabled
+2018-09-27 09:29:09.7825 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-27 09:29:09.9051 Info Adding target File Target[allfile]
+2018-09-27 09:29:09.9225 Info Adding target File Target[ownFile-web]
+2018-09-27 09:29:09.9302 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-27 09:29:09.9570 Info Found 45 configuration items
+2018-09-27 09:37:03.6734 Info Message Template Auto Format enabled
+2018-09-27 09:37:03.7052 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-27 09:37:03.8043 Info Adding target File Target[allfile]
+2018-09-27 09:37:03.8260 Info Adding target File Target[ownFile-web]
+2018-09-27 09:37:03.8338 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-27 09:37:03.8559 Info Found 45 configuration items
+2018-09-27 09:57:52.4310 Info Message Template Auto Format enabled
+2018-09-27 09:57:52.5917 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-27 09:57:52.7454 Info Adding target File Target[allfile]
+2018-09-27 09:57:52.7654 Info Adding target File Target[ownFile-web]
+2018-09-27 09:57:52.7734 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-27 09:57:52.7967 Info Found 45 configuration items
+2018-09-27 10:04:07.0217 Info Message Template Auto Format enabled
+2018-09-27 10:04:07.0439 Info Loading assembly: NLog.Web.AspNetCore
+2018-09-27 10:04:07.1684 Info Adding target File Target[allfile]
+2018-09-27 10:04:07.1870 Info Adding target File Target[ownFile-web]
+2018-09-27 10:04:07.1965 Info Configured from an XML element in /Users/rolf/Development/VisualStudio/Payment/Payment/DataEstate.Payment/bin/Debug/netcoreapp2.0/nlog.config...
+2018-09-27 10:04:07.2192 Info Found 45 configuration items

@@ -2,14 +2,16 @@
   "Logging": {
     "IncludeScopes": false,
     "LogLevel": {
-      "Default": "Debug",
       "System": "Information",
       "Microsoft": "Information"
     }
   }, 
   "Stripe": {
     "PublicKey": "", //<------- Stripe Pub Key
-    "SecretKey": "" //<------- Stripe Secrety Key
+    "SecretKey": "", //<------- Stripe Secrety Key
+    "WebhookSecrets": {
+      "InvoiceWebhook": "" //<------ Stripe webhook key for the invoice webhook
+    }
   },
   "OAuth": {
     "Authority": "https://dataestate-dev.au.auth0.com/",

@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using DataEstate.Stripe.Enums;
 namespace DataEstate.Stripe.Helpers
 {
     public static class StripeHelpers
     {
+        private static Dictionary<string, string> webhookSecrets;
+
         public static SubscriptionInterval ToStripeInterval(string intervalName)
         {
             switch (intervalName)
@@ -37,6 +40,32 @@ namespace DataEstate.Stripe.Helpers
                     return SubscriptionStatus.Unpaid;
                 default:
                     return null;
+            }
+        }
+
+        public static void SetWebhookSecret(string key, string secret)
+        {
+            if (webhookSecrets == null)
+            {
+                webhookSecrets = new Dictionary<string, string>();
+            }
+            webhookSecrets[key] = secret;
+        }
+
+        public static void SetWebhookSecrets(Dictionary<string, string> secrets)
+        {
+            webhookSecrets = secrets;
+        }
+
+        public static string GetWebhookSecret(string key)
+        {
+            if (webhookSecrets.ContainsKey(key))
+            {
+                return webhookSecrets[key];
+            }
+            else
+            {
+                return null;
             }
         }
     }

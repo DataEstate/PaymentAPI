@@ -10,6 +10,11 @@ using Newtonsoft.Json;
 using DataEstate.Payment.Models.Pages;
 using DataEstate.Payment.Models.Dtos;
 using DataEstate.Mailer.Models.Dtos;
+using Microsoft.Extensions.Logging;
+using DataEstate.Stripe.Helpers;
+using NLog;
+using Microsoft.AspNetCore.Hosting;
+using System.Net;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DataEstate.Payment.Controllers.v1
@@ -17,13 +22,20 @@ namespace DataEstate.Payment.Controllers.v1
     [Route("v1/[controller]")]
     public class WebhookController : Controller
     {
+        private const string WHS_KEY = "InvoiceWebhook";
+        private const string STRIPE_SIGNATURE = "Stripe-Signature";
+
         private JsonSerializerSettings _defaultSettings;
         private ISubscriptionService _subscriptionService;
         private ICustomerService _customerService;
         private IMailService _mailService;
         private ITemplateService _templateService;
+        private ILogger<WebhookController> _logger;
+        private IHostingEnvironment _env;
 
-        public WebhookController(ISubscriptionService subscriptionService, ICustomerService customerService, IMailService mailService, ITemplateService templateService)
+        public WebhookController(ISubscriptionService subscriptionService, ICustomerService customerService, 
+                                 IMailService mailService, ITemplateService templateService, 
+                                 ILogger<WebhookController> logger, IHostingEnvironment env)
         {
             _subscriptionService = subscriptionService;
             _customerService = customerService;
@@ -33,27 +45,51 @@ namespace DataEstate.Payment.Controllers.v1
             };
             _mailService = mailService;
             _templateService = templateService;
+            _logger = logger;
+            _env = env;
         }
 
         [Route("stripe/invoice")]
         [HttpPost()]
         public IActionResult StripeInvoiceWebhook()
         {
-            var requestBody = new StreamReader(Request.Body).ReadToEnd();
-            StripeEvent eventRequest = null;
-            //TODO - Check Stripe Key
-            eventRequest = JsonConvert.DeserializeObject<StripeEvent>(requestBody);
-            var eventData = eventRequest.Data.Object;
-            switch (eventRequest.Type)
+            try
             {
-                case "invoice.payment_succeeded":
-                    var eventInvoice = eventData.ToObject<StripeInvoice>();
-                    return ProcessInvoicePaymentSucceeded(eventInvoice);
+                var webhookSecret = StripeHelpers.GetWebhookSecret(WHS_KEY);
+                var requestBody = new StreamReader(Request.Body).ReadToEnd();
+                StripeEvent eventRequest = null;
+                if (Request.Headers.ContainsKey(STRIPE_SIGNATURE))
+                {
+                    var signature = Request.Headers[STRIPE_SIGNATURE];
+                    eventRequest = StripeEventUtility.ConstructEvent(requestBody, signature, webhookSecret);
+                }
+                else
+                {
+                    Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                }
+                //eventRequest = JsonConvert.DeserializeObject<StripeEvent>(requestBody);
+                var eventData = eventRequest.Data.Object;
+                switch (eventRequest.Type)
+                {
+                    case "invoice.payment_succeeded":
+                        var eventInvoice = eventData.ToObject<StripeInvoice>();
+                        return ProcessInvoicePaymentSucceeded(eventInvoice);
+                }
+                return Json(new
+                {
+                    StatusCode = true
+                });
             }
-            return Json(new
+            catch (Exception e)
             {
-                StatusCode = true
-            });
+                var errorResponse = new ErrorResponse
+                {
+                    Status = "Error",
+                    Message = e.Message
+                };
+                _logger.LogError($"{Response.StatusCode} - {e.Message}, Stack: {e.StackTrace}");
+                return Json(errorResponse);
+            }
         }
 
         private IActionResult ProcessInvoicePaymentSucceeded(StripeInvoice invoiceData)
@@ -102,6 +138,7 @@ namespace DataEstate.Payment.Controllers.v1
                     StatusCode = 400,
                     Message = e.Message
                 };
+                _logger.LogError($"{e.Message} - {e.StackTrace}");
                 return Json(errorResponse, _defaultSettings);
             }
         }

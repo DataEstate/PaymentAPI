@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using DataEstate.Stripe.Interfaces;
 using DataEstate.Stripe.Models.Dtos;
 using DataEstate.Stripe.Extensions;
 using DataEstate.Helpers;
 using System.Net;
+using NLog;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 /***
@@ -23,14 +25,16 @@ namespace DataEstate.Payment.Controllers
     {
         private JsonSerializerSettings _defaultSettings;
         private ISubscriptionService _subscriptionService;
+        private ILogger<SubscriptionController> _logger;
 
-        public SubscriptionController(ISubscriptionService subscriptionService)
+        public SubscriptionController(ISubscriptionService subscriptionService, ILogger<SubscriptionController> logger)
         {
             _subscriptionService = subscriptionService;
             _defaultSettings = new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             };
+
         }
         // GET: /<controller>/
         [Authorize("subscription:read")]

@@ -19,6 +19,7 @@ using DataEstate.Stripe.Services;
 using DataEstate.Mailer.Interfaces;
 using DataEstate.Mailer.Services;
 using DataEstate.Mailer.Models.Configurations;
+using DataEstate.Stripe.Helpers;
 
 namespace DataEstate.Payment
 {
@@ -82,6 +83,8 @@ namespace DataEstate.Payment
                 app.UseDeveloperExceptionPage();
             }
             StripeConfiguration.SetApiKey(Configuration.GetSection("Stripe:SecretKey").Value);
+            //TODO: setup webhook key. 
+            StripeHelpers.SetWebhookSecret("InvoiceWebhook", Configuration.GetSection("Stripe:WebhookSecrets:InvoiceWebhook").Value); //TODO: Set the whole dictionary
             EncryptionHelper.SetEncryptionKey(Configuration.GetSection("Encryption:Key").Value);
             app.UseAuthentication();
             app.UseStaticFiles();

@@ -58,8 +58,8 @@ namespace DataEstate.Stripe.Models.Dtos
         [JsonConverter(typeof(StringEnumConverter))]
         public SubscriptionStatus? Status;
 
-        [JsonProperty("tax")]
-        public decimal Tax = 0.1M;
+        [JsonProperty("tax", NullValueHandling = NullValueHandling.Ignore)]
+        public decimal Tax = 10.0M;
 
         [JsonProperty("trialStart")]
         public DateTime? TrialStart;

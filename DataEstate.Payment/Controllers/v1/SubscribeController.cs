@@ -13,6 +13,7 @@ using DataEstate.Mailer.Interfaces;
 using DataEstate.Mailer.Extensions;
 using DataEstate.Payment.Models.Pages;
 using DataEstate.Stripe.Extensions;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 /***
@@ -28,8 +29,9 @@ namespace DataEstate.Payment.Controllers
         private ICustomerService _customerService;
         private IMailService _mailService;
         private ITemplateService _templateService;
+        private ILogger<SubscribeController> _logger;
 
-        public SubscribeController(ISubscriptionService subscriptionService, ICustomerService customerService, IMailService mailService, ITemplateService templateService)
+        public SubscribeController(ISubscriptionService subscriptionService, ICustomerService customerService, IMailService mailService, ITemplateService templateService, ILogger<SubscribeController> nlogger)
         {
             _subscriptionService = subscriptionService;
             _customerService = customerService;
@@ -39,6 +41,7 @@ namespace DataEstate.Payment.Controllers
             };
             _mailService = mailService;
             _templateService = templateService;
+            _logger = nlogger;
         }
        
         [Route("invite")]
@@ -54,6 +57,7 @@ namespace DataEstate.Payment.Controllers
                     //Check Expiry. Cancel if expired. 
                     if (invitation.ExpiryDate != null && invitation.ExpiryDate < DateTime.Now)
                     {
+                        _logger.LogInformation("Request for expired string detected");
                         ViewData["ErrorTitle"] = "Your invitation has expired. ";
                         ViewData["ErrorDescription"] = "Unfortunately this invitation has expired. Please contact Data Estate to have it sent again.";
                         return View("InvitationError");
@@ -85,18 +89,21 @@ namespace DataEstate.Payment.Controllers
                     ViewData["TaxRate"] = invitation.Subscription.Tax;
                     ViewData["Tax"] = taxTotal.ToDollarAmount(true); //Always GST for now. 
                     ViewData["Total"] = total.ToDollarAmount(true);
+                    _logger.LogInformation("Invitation Viewed");
                     return View("Invitation", invitation);
                 }
                 catch (ArgumentException ae) {
                     Response.StatusCode = 500;
                     ViewData["ErrorTitle"] = "There's a problem with the server setup. ";
                     ViewData["ErrorDescription"] = $"There's a problem with the encryption of this invite ID on the server. Please report this issue to <a href='mailto:support@dataestate.com.au'>Data Estate</a> and wait for the team to resolve. Issue found: <br><p><em>{ae.Message}</em></p>";
+                    _logger.LogError($"Encryption Error: {ae.Message}, Source: {ae.Source}, StackTrace: {ae.StackTrace}");
                     return View("InvitationError");
                 }
                 catch (Exception e) {
                     Response.StatusCode = 400;
                     ViewData["ErrorTitle"] = "There's a problem with your request";
                     ViewData["ErrorDescription"] = $"Following problems have been found with your request: {e.Message}";
+                    _logger.LogError($"Request Error: {e.Message}, Source: {e.Source}, StackTrace: {e.StackTrace}");
                     return View("InvitationError");
                 }
             }
@@ -140,11 +147,12 @@ namespace DataEstate.Payment.Controllers
             if (subscriptionFormData.Plans == null || subscriptionFormData.Plans.Count <= 0)
             {
                 Response.StatusCode = 400;
+                var errMessage = "Submission had no plans attached. No transaction or subscription occured. ";
                 ViewData["ErrorTitle"] = "There's a problem with your request";
-                ViewData["ErrorDescription"] = "Submission had no plans attached. No transaction or subscription occured. ";
+                ViewData["ErrorDescription"] = errMessage;
+                _logger.LogInformation(errMessage);
                 return View("InvitationError");
             }
-
             var plans = new List<SubscriptionItem>();
             foreach (var planData in subscriptionFormData.Plans)
             {
@@ -156,21 +164,24 @@ namespace DataEstate.Payment.Controllers
                     }
                 );
             }
-
             Customer customer;
             /** Create Customer. **/
             if (subscriptionFormData.Email == null)
             {
+                var errMessage = "New subscription will require a valid client email. No transaction or subscription occured. ";
                 Response.StatusCode = 400;
                 ViewData["ErrorTitle"] = "There's a problem with your request";
-                ViewData["ErrorDescription"] = "New subscription will require a valid client email. No transaction or subscription occured. ";
+                ViewData["ErrorDescription"] = errMessage;
+                _logger.LogInformation(errMessage);
                 return View("InvitationError");
             }
             if (subscriptionFormData.CardToken == null)
             {
+                var errMessage = "Subscription requires a valid card token. No transaction or subscription occured. ";
                 Response.StatusCode = 400;
                 ViewData["ErrorTitle"] = "There's a problem with your request";
-                ViewData["ErrorDescription"] = "Subscription requires a valid card token. No transaction or subscription occured. ";
+                ViewData["ErrorDescription"] = errMessage;
+                _logger.LogInformation(errMessage);
                 return View("InvitationError");
             }
             try {
@@ -195,6 +206,7 @@ namespace DataEstate.Payment.Controllers
             }
             catch (StripeException se)
             {
+                _logger.LogInformation("Stripe Error: " + se.Message);
                 if (se.StripeError.DeclineCode != null)
                 {
                     ViewData["ErrorTitle"] = "There was a problem with your card.";
@@ -215,10 +227,12 @@ namespace DataEstate.Payment.Controllers
                         ViewData["ErrorDescription"] = se.Message;
                         break;
                 }
+
                 return View("InvitationError");
             }
             catch (Exception e)
             {
+                _logger.LogInformation($"Exception: {e.Message}, Source:{e.Source}, StackTrace: {e.StackTrace}");
                 ViewData["ErrorTitle"] = "There's a problem with your request";
                 ViewData["ErrorDescription"] = e.Message;
                 return View("InvitationError");
@@ -229,6 +243,7 @@ namespace DataEstate.Payment.Controllers
                 Response.StatusCode = 400;
                 ViewData["ErrorTitle"] = "There's a problem with your request";
                 ViewData["ErrorDescription"] = "Client creation failed, and therefore was not able to proceed with subscription. No transaction or subscription occured. ";
+                _logger.LogInformation("Request had no customer information");
                 return View("InvitationError");
             }
             var subscriptionCreate = new Subscription
@@ -239,7 +254,7 @@ namespace DataEstate.Payment.Controllers
             };
                 
             var subscription = _subscriptionService.CreateSubscription(subscriptionCreate);
-
+            _logger.LogInformation($"Subscription success. Customer ID: {customer.Id}, subscription ID: {subscription.Id}");
             return View("InvitationSubmitted", subscription);
         }
 
