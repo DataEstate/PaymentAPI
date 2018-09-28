@@ -43,5 +43,6 @@ Thumbs.db
 # Configs
 DataEstate.Payment/appsettings*
 DataEstate.Auth/appsettings*
+DataEstate.Payment/wwwroot/dist
 DataEstate.Payment/wwwroot/css/style.min.css
 DataEstate.Payment/wwwroot/js/invitation.min.js

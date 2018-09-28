@@ -1,13 +1,13 @@
 ﻿[
   {
-    "outputFileName": "wwwroot/css/style.min.css",
+    "outputFileName": "wwwroot/dist/css/style.min.css",
     "inputFiles": [
       "wwwroot/css/style.css",
       "wwwroot/css/style-mobile.css"
     ]
   },
   {
-    "outputFileName": "wwwroot/js/invitation.min.js",
+    "outputFileName": "wwwroot/dist/js/invitation.min.js",
     "inputFiles": [
       "wwwroot/js/invitation.js"
     ],
