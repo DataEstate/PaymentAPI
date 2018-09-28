@@ -8,12 +8,11 @@ using Newtonsoft.Json;
 using DataEstate.Stripe.Models.Dtos;
 using DataEstate.Payment.Models.Dtos;
 using Stripe;
-using DataEstate.Mailer.Models.Dtos;
 using DataEstate.Mailer.Interfaces;
-using DataEstate.Mailer.Extensions;
-using DataEstate.Payment.Models.Pages;
 using DataEstate.Stripe.Extensions;
+using DataEstate.Stripe.Models.Configurations;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 /***
@@ -30,8 +29,10 @@ namespace DataEstate.Payment.Controllers
         private IMailService _mailService;
         private ITemplateService _templateService;
         private ILogger<SubscribeController> _logger;
+        private StripeSettings _stripeSettings;
 
-        public SubscribeController(ISubscriptionService subscriptionService, ICustomerService customerService, IMailService mailService, ITemplateService templateService, ILogger<SubscribeController> nlogger)
+        public SubscribeController(ISubscriptionService subscriptionService, ICustomerService customerService, IMailService mailService, 
+                                   ITemplateService templateService, ILogger<SubscribeController> nlogger, IOptions<StripeSettings> stripeSettings)
         {
             _subscriptionService = subscriptionService;
             _customerService = customerService;
@@ -42,6 +43,7 @@ namespace DataEstate.Payment.Controllers
             _mailService = mailService;
             _templateService = templateService;
             _logger = nlogger;
+            _stripeSettings = stripeSettings.Value;
         }
        
         [Route("invite")]
@@ -89,6 +91,7 @@ namespace DataEstate.Payment.Controllers
                     ViewData["TaxRate"] = invitation.Subscription.Tax;
                     ViewData["Tax"] = taxTotal.ToDollarAmount(true); //Always GST for now. 
                     ViewData["Total"] = total.ToDollarAmount(true);
+                    ViewData["PubKey"] = _stripeSettings.PublicKey;
                     _logger.LogInformation("Invitation Viewed");
                     return View("Invitation", invitation);
                 }

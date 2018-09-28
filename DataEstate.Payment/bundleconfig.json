@@ -1,0 +1,19 @@
+﻿[
+  {
+    "outputFileName": "wwwroot/css/style.min.css",
+    "inputFiles": [
+      "wwwroot/css/style.css",
+      "wwwroot/css/style-mobile.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/invitation.min.js",
+    "inputFiles": [
+      "wwwroot/js/invitation.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    }
+  }
+]

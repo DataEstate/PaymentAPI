@@ -154,3 +154,11 @@ input.error {
 span.plan-amount-condition {
     font-size: 10px;
 }
+.with-fixed-header {
+    padding-top: 120px;
+}
+#home-container {
+    background: white;
+    width: 100%;
+    height: 60vh;
+}

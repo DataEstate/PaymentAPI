@@ -19,6 +19,7 @@ using DataEstate.Stripe.Services;
 using DataEstate.Mailer.Interfaces;
 using DataEstate.Mailer.Services;
 using DataEstate.Mailer.Models.Configurations;
+using DataEstate.Stripe.Models.Configurations;
 using DataEstate.Stripe.Helpers;
 
 namespace DataEstate.Payment
@@ -42,6 +43,7 @@ namespace DataEstate.Payment
             var authAudience = Configuration.GetSection("OAuth:Audience").Value;
 
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
             services.AddSingleton<IMailService, MailGunService>();
             services.AddScoped<ITemplateService, TemplateService>();
             services.AddAuthorization(
@@ -88,7 +90,13 @@ namespace DataEstate.Payment
             EncryptionHelper.SetEncryptionKey(Configuration.GetSection("Encryption:Key").Value);
             app.UseAuthentication();
             app.UseStaticFiles();
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}");
+            }
+            );
         }
     }
 }

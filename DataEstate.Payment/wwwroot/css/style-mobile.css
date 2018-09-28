@@ -1,1 +1,12 @@
-﻿
+﻿@media screen and (max-width: 600px) {
+    #main-header {
+        display: flex;
+    }
+    .header-content h2 {
+        font-size: 24px;
+    }
+    .card {
+        width:100%;
+        margin-top: 90px;
+    }
+}
